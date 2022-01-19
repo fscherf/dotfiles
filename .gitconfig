@@ -1,0 +1,35 @@
+[core]
+	editor = vim
+	abbrev = 12
+
+[color]
+	ui = true
+
+[alias]
+	aa = add --all
+
+	l = log --oneline
+	s = status --porcelain
+	i = remote -v
+
+	cm = commit -sv -m
+	ca = commit -sv --amend
+
+	b = branch
+	ba = branch -a
+
+	c = checkout
+	cb = checkout -b
+
+	r = reset
+	rh = reset --hard
+
+	rbi = rebase -i --autosquash
+	rbmi = rebase -i master --autosquash
+
+	pretty-show = show -s --pretty='format:%h (\"%s\")'
+	patchcount = shortlog -s -n
+	meld = !git difftool $1^! --tool meld --no-prompt
+
+[pull]
+	ff = only

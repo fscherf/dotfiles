@@ -1,0 +1,56 @@
+set show-untracked = no
+
+color cursor 232 154 bold
+
+bind main F !git commit --fixup %(commit)
+bind main C !git cherry-pick %(commit)
+bind main M !git rebase -i --autosquash %(commit)
+
+bind main t move-down
+bind main n move-up
+bind main s view-diff
+bind main g move-first-line
+bind main G move-last-line
+
+bind diff h view-close
+bind diff t move-down
+bind diff T move-page-down
+bind diff n move-up
+bind diff N move-page-up
+bind diff g move-first-line
+bind diff G move-last-line
+
+bind blame h view-close
+bind blame t move-down
+bind blame T move-page-down
+bind blame n move-up
+bind blame N move-page-up
+bind blame g move-first-line
+bind blame G move-last-line
+
+bind status h view-main
+bind status t move-down
+bind status n move-up
+
+bind stage h quit
+bind stage t move-down
+bind stage T move-page-down
+bind stage n move-up
+bind stage N move-page-up
+bind stage g move-first-line
+bind stage G move-last-line
+
+bind status P !git add -p %(file)
+bind status C !git checkout %(file)
+bind status D !rm %(file)
+
+bind refs h quit
+bind refs t move-down
+bind refs n move-up
+bind refs s enter
+bind refs g move-first-line
+bind refs G move-last-line
+
+bind refs d !git branch -d %(branch)
+bind refs D !git branch -D %(branch)
+

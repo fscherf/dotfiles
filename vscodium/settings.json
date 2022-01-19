@@ -1,0 +1,148 @@
+// ~/.config/VSCodium/User/settings.json
+{
+    "keyboard.dispatch": "keyCode",
+    "workbench.startupEditor": "none",
+    "editor.rulers": [79],
+    "vim.leader": "<space>",
+
+    // keybindigs
+    "vim.normalModeKeyBindings": [
+        {
+            "before": [
+                "t"
+            ],
+            "after": [
+                "j"
+            ],
+        },
+        {
+            "before": [
+                "n"
+            ],
+            "after": [
+                "k"
+            ],
+        },
+        {
+            "before": [
+                "s"
+            ],
+            "after": [
+                "l"
+            ],
+        },
+        {
+            "before": [
+                "T"
+            ],
+            "after": [
+                "<PageDown>"
+            ],
+        },
+        {
+            "before": [
+                "N"
+            ],
+            "after": [
+                "<PageUp>"
+            ],
+        },
+        {
+            "before": [
+                "H",
+            ],
+            "commands": [
+        		  "extension.vim_ctrl+pageup"
+            ],
+        },
+        {
+            "before": [
+                "S",
+            ],
+            "commands": [
+        		  "extension.vim_ctrl+pagedown"
+            ],
+        },
+        {
+            "before": [
+                "<space>",
+            ],
+            "commands": [
+		        "editor.action.showHover",
+            ],
+        },
+    ],
+    "vim.visualModeKeyBindings": [
+        {
+            "before": [
+                "t"
+            ],
+            "after": [
+                "j"
+            ],
+        },
+        {
+            "before": [
+                "n"
+            ],
+            "after": [
+                "k"
+            ],
+        },
+        {
+            "before": [
+                "s"
+            ],
+            "after": [
+                "l"
+            ],
+        },
+    ],
+
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter.notebook.ipynb"
+    },
+    "editor.cursorBlinking": "solid",
+    "editor.cursorStyle": "block",
+    "editor.wordBasedSuggestions": true,
+
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": true
+      },
+
+    "workbench.iconTheme": "eq-material-theme-icons-darker",
+    "color-highlight.markerType": "dot-before",
+    "workbench.tree.indent": 22,
+    "vim.hlsearch": true,
+    "workbench.colorTheme": "GitHub Dark",
+
+    "terminal.integrated.mouseWheelScrollSensitivity": 0.01,
+    "eslint.migration.2_x": "off",
+    "[markdown]": {
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": false
+    },
+    "cSpell.userWords": [
+        "MIDDLEWARES",
+        "NOQA",
+        "aiohttp",
+        "asyncio",
+        "docutils",
+        "lona",
+        "overrideable",
+        "pformat",
+        "websockets",
+        "yarl"
+    ],
+    "explorer.confirmDragAndDrop": false,
+    "workbench.colorCustomizations": {
+        "terminalCursor.foreground": "#ffffffcc"
+    },
+
+    "window.titleBarStyle": "custom",
+    "window.customMenuBarAltFocus": false,
+    "terminal.integrated.inheritEnv": false,
+    "terminal.external.linuxExec": "xterm",
+}

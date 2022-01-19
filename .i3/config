@@ -1,0 +1,191 @@
+# ~/.i3/config
+# Optimized for Dvorak
+
+set $mod Mod4
+floating_modifier Mod1
+workspace_layout tabbed
+
+
+# style
+font pango:DejaVu Sans Mono 8
+new_float normal 1 px
+new_window normal 1 px
+hide_edge_borders both
+#                       border  backgr. text    indicator
+client.focused          #285577 #285577 #ffffff #2e9ef4
+client.focused_inactive #5f676a #5f676a #ffffff #484e50
+client.unfocused        #222222 #222222 #888888 #292d2e
+client.urgent           #900000 #900000 #ffffff #900000
+
+for_window [class="^Terminator$"] border none
+
+
+# function keys
+bindsym XF86AudioMute         exec "amixer -q set Master toggle"
+bindsym XF86AudioLowerVolume  exec "amixer -q sset Master 5%-"
+bindsym XF86AudioRaiseVolume  exec "amixer -q sset Master 5%+"
+bindsym XF86MonBrightnessDown exec "xbacklight -dec 5"
+bindsym XF86MonBrightnessUp   exec "xbacklight -inc 5"
+
+
+# base
+bindsym $mod+Return       exec "terminator"
+bindsym $mod+space        focus mode_toggle
+bindsym $mod+Shift+space  floating toggle
+bindsym $mod+apostrophe   kill
+bindsym $mod+q            kill
+bindsym $mod+f            fullscreen
+bindsym $mod+e            split vertical
+bindsym $mod+u            split horizontal
+bindsym $mod+d            exec "~/.i3/bin/dmenu"
+
+
+# change focus
+bindsym $mod+h         focus left
+bindsym $mod+t         focus down
+bindsym $mod+n         focus up
+bindsym $mod+s         focus right
+bindsym $mod+Left      focus left
+bindsym $mod+Down      focus down
+bindsym $mod+Up        focus up
+bindsym $mod+Right     focus right
+bindsym $mod+a         focus parent
+bindsym $mod+o         focus child
+
+
+# move focused window
+bindsym $mod+Shift+h     move left
+bindsym $mod+Shift+t     move down
+bindsym $mod+Shift+n     move up
+bindsym $mod+Shift+s     move right
+bindsym $mod+Shift+Left  move left
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Up    move up
+bindsym $mod+Shift+Right move right
+
+
+# switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+
+# modes
+mode "resize" {
+        # resize
+        bindsym h     resize shrink width 10 px or 10 ppt
+        bindsym t     resize grow height 10 px or 10 ppt
+        bindsym n     resize shrink height 10 px or 10 ppt
+        bindsym s     resize grow width 10 px or 10 ppt
+
+        bindsym Left  resize shrink width 10 px or 10 ppt
+        bindsym Down  resize grow height 10 px or 10 ppt
+        bindsym Up    resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # move focus
+        bindsym $mod+h focus left
+        bindsym $mod+t focus down
+        bindsym $mod+n focus up
+        bindsym $mod+s focus right
+
+        bindsym $mod+Left  focus left
+        bindsym $mod+Down  focus down
+        bindsym $mod+Up    focus up
+        bindsym $mod+Right focus right
+
+        # exit
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+mode "move" {
+        bindsym h move workspace to output left;  mode "default"
+        bindsym t move workspace to output down;  mode "default"
+        bindsym n move workspace to output up;    mode "default"
+        bindsym s move workspace to output right; mode "default"
+        bindsym g move scratchpad;                mode "default"
+
+        # move focused container to workspace
+        bindsym 1 move container to workspace 1;  mode "default"
+        bindsym 2 move container to workspace 2;  mode "default"
+        bindsym 3 move container to workspace 3;  mode "default"
+        bindsym 4 move container to workspace 4;  mode "default"
+        bindsym 5 move container to workspace 5;  mode "default"
+        bindsym 6 move container to workspace 6;  mode "default"
+        bindsym 7 move container to workspace 7;  mode "default"
+        bindsym 8 move container to workspace 8;  mode "default"
+        bindsym 9 move container to workspace 9;  mode "default"
+        bindsym 0 move container to workspace 10; mode "default"
+
+        # exit
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+mode "layout" {
+        bindsym t layout tabbed;   mode "default"
+        bindsym s layout stacking; mode "default"
+        bindsym d layout default;  mode "default"
+        bindsym v layout splitv;   mode "default"
+        bindsym h layout splith;   mode "default"
+
+        bindsym n layout toggle all
+
+        # exit
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+bindsym $mod+m mode "move"
+bindsym $mod+l mode "layout"
+
+
+# scratchpad manager
+mode "scratchpad" {
+        bindsym Mod1+g                exec "~/.i3/bin/i3-scratchpad show"; mode "default"
+        bindsym Mod1+h                exec "~/.i3/bin/i3-scratchpad next"
+        bindsym Mod1+s                exec "~/.i3/bin/i3-scratchpad next"
+        bindsym Mod1+apostrophe       kill; mode "default"
+
+        # function keys
+        bindsym XF86AudioMute         exec "amixer -q set Master toggle"
+        bindsym XF86AudioLowerVolume  exec "amixer -q sset Master 5%-"
+        bindsym XF86AudioRaiseVolume  exec "amixer -q sset Master 5%+"
+        bindsym XF86MonBrightnessDown exec "xbacklight -dec 5"
+        bindsym XF86MonBrightnessUp   exec "xbacklight -inc 5"
+        bindsym XF86Launch1           exec "~/bin/toggle-touchpad"
+        bindsym XF86AudioPrev         exec "~/bin/spotify-send prev"
+        bindsym XF86AudioPlay         exec "~/bin/spotify-send play"
+        bindsym XF86AudioNext         exec "~/bin/spotify-send next"
+}
+bindsym Mod1+g exec "~/.i3/bin/i3-scratchpad show"; mode "scratchpad"
+bindsym Mod1+shift+g move scratchpad
+
+
+# i3bar
+bar {
+        status_command i3status -c ~/.i3/i3status.conf
+        position top
+        font pango:DejaVu Sans Mono 8, pango:FontAwesome 8
+
+        colors {
+                background #151515
+                statusline #ffffff
+                separator  #5F5F5F
+
+                #                  border  backgr. text
+                focused_workspace  #285577 #285577 #ffffff
+                active_workspace   #5f676a #5f676a #ffffff
+                inactive_workspace #222222 #222222 #888888
+                urgent_workspace   #285577 #285577 #ffffff
+        }
+}
