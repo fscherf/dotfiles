@@ -221,7 +221,8 @@ class SwitchWindows(LonaView):
         config = self.server.state['x-windows']
 
         # cycle by window id
-        if active_desktop_id in config:
+        if('ignore-selection' not in request.GET and
+           active_desktop_id in config):
 
             # find next window id
             _config = config[active_desktop_id]
