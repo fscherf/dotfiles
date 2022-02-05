@@ -277,4 +277,23 @@ class SwitchWindows(LonaView):
         }
 
 
+@app.route('/switch-x-desktops(/)', interactive=False)
+class SwitchXDesktops(LonaView):
+    def handle_request(self, request):
+        active_desktop_id, active_window_index, windows = get_wm_state()
+        next_desktop_id = active_desktop_id + 1
+
+        if next_desktop_id not in windows:
+            next_desktop_id = 0
+
+        if next_desktop_id in windows:
+            raise_window_by_window_id(windows[next_desktop_id][0][0])
+
+        return {
+            'json': {
+                'exit_code': 0,
+            }
+        }
+
+
 app.run()
