@@ -121,16 +121,32 @@ class Index(LonaView):
                 if len(state[desktop_id]) < 1:
                     state.pop(desktop_id)
 
-    def render_table(self):
+    def render_tables(self):
         active_desktop_id, active_window_index, windows = get_wm_state()
 
         with self.html.lock:
-            self.tbody.nodes.clear()
+            self.tables.nodes.clear()
 
-            for desktop_id, _windows in windows.items():
+            for desktop_id in sorted(windows.keys()):
+                _windows = windows[desktop_id]
+
+                tbody = TBody()
+
+                table = Table(
+                    THead(
+                        Tr(
+                            Th('Window Class', width='30%'),
+                            Th('Title'),
+                        ),
+                    ),
+                    tbody,
+                    _class='table x-windows-table',
+                )
+
+                self.tables.append(table)
+
                 for window_id, window_class, window_title in _windows:
                     tr = Tr(
-                        Th(desktop_id),
                         events=[CLICK],
                         handle_click=self.handle_tr_click,
                     )
@@ -152,7 +168,7 @@ class Index(LonaView):
 
                             tr.class_list.add('selected')
 
-                    self.tbody.nodes.append(tr)
+                    tbody.nodes.append(tr)
 
     def handle_request(self, request):
         self.set_title(f'Cockpit {VERSION}')
@@ -164,27 +180,18 @@ class Index(LonaView):
                 Small(VERSION, style='color: var(--bs-gray)'),
             ),
             H2('X Window Switcher'),
-            Table(
-                THead(
-                    Tr(
-                        Th('Desktop ID'),
-                        Th('Window Class'),
-                        Th('Title'),
-                    ),
-                ),
-                TBody(),
-                _class='table x-windows-table',
-            ),
+            Div(_id='tables'),
+
             Div(
                 PrimaryButton('Refresh', _id='refresh'),
                 _class='float-end',
             ),
         )
 
-        self.tbody = self.html.query_selector('tbody')
+        self.tables = self.html.query_selector('div#tables')
 
         while True:
-            self.render_table()
+            self.render_tables()
             self.await_click(html=self.html)
 
 
