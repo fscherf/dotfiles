@@ -88,6 +88,20 @@ app.add_static_file('lona/style.css', """
     }
 """)
 
+app.add_template('lona/frontend.js', """
+    lona_context.add_disconnect_hook(function(lona_context, event) {
+        document.querySelector('#lona').innerHTML = `
+            <h1>Cockpit</h1>
+            <p>Trying to reconnect...</p>
+        `;
+
+        setTimeout(function() {
+            lona_context.reconnect();
+
+        }, 1000);
+    });
+""")
+
 
 @app.middleware
 class SetupStateMiddleware:
