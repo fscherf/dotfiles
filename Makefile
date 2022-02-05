@@ -1,5 +1,6 @@
 SHELL=/bin/bash
 
+.PHONY: cockpit
 
 install:
 	[ -d ~/.vim/bundle/Vundle.vim ] || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
@@ -19,3 +20,6 @@ pull:
 	cp ~/.tmux.conf .tmux.conf
 	cp ~/.tigrc .tigrc
 	cp ~/.vimrc .vimrc
+
+cockpit:
+	$(MAKE) -C cockpit server
