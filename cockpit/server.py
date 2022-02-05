@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from subprocess import check_output
+import subprocess
 
 from lona_bootstrap_5 import PrimaryButton
 from lona import LonaApp, LonaView
@@ -25,11 +25,21 @@ VERSION = 'v0.0'
 
 # window manager helper #######################################################
 def raise_window_by_window_id(window_id):
-    check_output(['wmctrl', '-i', '-a', str(window_id)])
+    subprocess.check_output(
+        ['wmctrl', '-i', '-a', str(window_id)],
+        stderr=subprocess.STDOUT,
+    )
 
 
 def get_active_window_id():
-    output = check_output(['xdotool', 'getactiveWindow']).decode()
+    try:
+        output = subprocess.check_output(
+            ['xdotool', 'getactiveWindow'],
+            stderr=subprocess.STDOUT,
+        ).decode()
+
+    except subprocess.CalledProcessError:
+        return None
 
     return int(output.strip())
 
@@ -39,7 +49,12 @@ def get_wm_state():
     returns: active_desktop_id, active_window_index, windows
     """
 
-    output = check_output(['wmctrl', '-l', '-x']).decode()
+    output = subprocess.check_output(
+        ['wmctrl', '-l', '-x'],
+        stderr=subprocess.STDOUT,
+    ).decode()
+
+
     lines = output.splitlines()
     active_window_id = get_active_window_id()
 
@@ -66,6 +81,9 @@ def get_wm_state():
         if window_id == active_window_id:
             active_desktop_id = desktop_id
             active_window_index = len(windows[desktop_id]) - 1
+
+    if active_window_id is None:
+        active_window_index = None
 
     return active_desktop_id, active_window_index, windows
 
@@ -216,6 +234,14 @@ class SwitchWindows(LonaView):
         active_desktop_id, active_window_index, windows = get_wm_state()
         windows = windows[active_desktop_id]
 
+        # check if a window is focused ########################################
+        if active_window_index is None:
+            return {
+                'json': {
+                    'exit_code': 0,
+                }
+            }
+
         # cycle through windows on the current desktop ########################
         next_window_id = None
         config = self.server.state['x-windows']
@@ -283,7 +309,9 @@ class SwitchXDesktops(LonaView):
         active_desktop_id, active_window_index, windows = get_wm_state()
         next_desktop_id = active_desktop_id + 1
 
-        if next_desktop_id not in windows:
+        if(next_desktop_id not in windows or
+           active_window_index is None):
+
             next_desktop_id = 0
 
         if next_desktop_id in windows:
