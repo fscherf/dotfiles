@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from subprocess import check_output
-import os
 
 from lona_bootstrap_5 import PrimaryButton
 from lona import LonaApp, LonaView
@@ -22,9 +21,6 @@ from lona.html import (
 )
 
 VERSION = 'v0.0'
-
-# environment #################################################################
-os.environ['DISPLAY'] = ':0'
 
 
 # window manager helper #######################################################
