@@ -136,5 +136,9 @@ git-reset-date() {
     GIT_COMMITTER_DATE="$(date)" git commit --amend --no-edit --date "$(date)"
 }
 
+check-mouse-battery() {
+    upower -i $(upower -e | command grep mouse)
+}
+
 # local bashrc ################################################################
 source ~/.bashrc.local
