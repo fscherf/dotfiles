@@ -37,6 +37,7 @@ alias rgrep='grep -rnI'
 alias feh='feh --scale-down'
 alias vim='vim -p'
 alias kw='date +%V'
+alias reload='source ~/.bashrc'
 
 # tmenu
 alias trs='tmux rename-session $(echo "$(basename $PWD)" | sed -r "s/\./_/g")'
