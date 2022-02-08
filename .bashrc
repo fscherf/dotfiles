@@ -16,14 +16,11 @@ bind -m vi "t":history-search-forward
 bind -m vi "s":forward-char
 
 # path ########################################################################
+# dotfiles, local
+export PATH="$HOME/bin:$HOME/.dotfiles/bin"
+
 # debian
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-
-# ~/bin
-export PATH="$PATH:$HOME/bin"
-
-# tmenu
-export PATH="$PATH:$HOME/.tmenu:$HOME/.tmenu/bin"
+export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # completion ##################################################################
 if [ -f /etc/bash_completion ]; then
@@ -41,6 +38,11 @@ alias feh='feh --scale-down'
 alias vim='vim -p'
 alias kw='date +%V'
 
+# tmenu
+alias trs='tmux rename-session $(echo "$(basename $PWD)" | sed -r "s/\./_/g")'
+alias trw='tmux rename-window $(echo "$(basename $PWD)" | sed -r "s/\./_/g")'
+
+# sudo
 if [ $UID -gt 0 ]; then
     alias ++='sudo -s'
     alias umount='sudo umount'
@@ -136,4 +138,3 @@ git-reset-date() {
 
 # local bashrc ################################################################
 source ~/.bashrc.local
-
