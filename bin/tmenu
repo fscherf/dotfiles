@@ -240,8 +240,12 @@ class TMenu:
 
             # 1 (start session)
             elif key == ord('1'):
-                tmux_new_session(tmux_generate_session_name())
-                self._paint()
+                new_session_name = tmux_generate_session_name()
+
+                tmux_new_session(new_session_name)
+                tmux_run('attach-session', '-t', new_session_name)
+
+                break
 
             # 2 (start shell)
             elif key == ord('2'):
