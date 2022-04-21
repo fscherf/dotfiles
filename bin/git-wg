@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -x
+
+git config user.name "Florian Scherf"
+git config user.email "F.Scherf@wertgarantie.com"
