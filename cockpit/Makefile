@@ -1,5 +1,5 @@
 SHELL=/bin/bash
-PYTHON=python3
+PYTHON=python3.9
 
 PYTHON_ENV=env
 

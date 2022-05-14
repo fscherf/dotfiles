@@ -1,3 +1,0 @@
-#!/bin/sh
-
-curl http://localhost:9000/switch-x-windows?ignore-selection
