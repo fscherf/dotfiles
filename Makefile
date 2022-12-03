@@ -3,7 +3,7 @@ SHELL=/bin/bash
 .PHONY: cockpit
 
 install:
-	[ -d ~/.vim/bundle/Vundle.vim ] || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+	[ -d ~/.vim/bundle/Vundle.vim ] || (git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim; vim +VundleInstall)
 	[ -d ~/bin ] || mkdir ~/bin
 	[ -f ~/.bashrc.local ] || touch ~/.bashrc.local
 	[ -f ~/.vimrc.local ] || touch ~/.vimrc.local
