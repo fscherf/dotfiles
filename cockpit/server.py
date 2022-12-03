@@ -246,8 +246,8 @@ class SwitchWindows(LonaView):
         next_window_id = None
         config = self.server.state['x-windows']
 
-        # cycle by window id
-        if('ignore-selection' not in request.GET and
+        # cycle through selection
+        if('invert-selection' not in request.GET and
            active_desktop_id in config):
 
             # find next window id
@@ -280,6 +280,24 @@ class SwitchWindows(LonaView):
 
                 if window_id == next_window_id:
                     next_window_id = window_id
+
+                    break
+
+        # cycle through inverted selection
+        elif('invert-selection' in request.GET and
+             active_desktop_id in config):
+
+            _config = config[active_desktop_id]
+            next_window_index = active_window_index
+
+            for _ in range(len(windows)):
+                next_window_index += 1
+
+                if next_window_index >= len(windows):
+                    next_window_index = 0
+
+                if windows[next_window_index][0] not in _config:
+                    next_window_id = windows[next_window_index][0]
 
                     break
 
