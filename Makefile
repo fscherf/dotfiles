@@ -2,6 +2,20 @@ SHELL=/bin/bash
 
 .PHONY: cockpit
 
+
+all: install
+
+# debian ######################################################################
+setup-debian:
+	sudo apt install \
+		vim vim-nox tmux git tig make rsync \
+		python3 python3-venv \
+		docker docker.io docker-compose \
+		wmctrl xdotool
+
+	sudo adduser $$USER docker
+
+# config ######################################################################
 install:
 	[ -d ~/.vim/bundle/Vundle.vim ] || (git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim; vim +VundleInstall)
 	[ -d ~/bin ] || mkdir ~/bin
@@ -25,9 +39,11 @@ pull:
 	cp ~/.config/Code/User/keybindings.json vscode
 	cp ~/.config/Code/User/settings.json vscode
 
+# cockpit #####################################################################
 cockpit:
 	$(MAKE) -C cockpit server
 
+# development envs ############################################################
 install-pyenv:
 	[ -d ~/.pyenv ] || git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 
