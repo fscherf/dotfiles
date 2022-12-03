@@ -6,7 +6,9 @@
     "vim.leader": "<space>",
 
     // keybindigs
-    "vim.normalModeKeyBindings": [
+    "vim.normalModeKeyBindingsNonRecursive": [
+
+        // movement
         {
             "before": [
                 "t"
@@ -36,7 +38,7 @@
                 "T"
             ],
             "after": [
-                "<PageDown>"
+                "<C-f>"
             ],
         },
         {
@@ -44,9 +46,11 @@
                 "N"
             ],
             "after": [
-                "<PageUp>"
+                "<C-b>"
             ],
         },
+
+        // tabs
         {
             "before": [
                 "H",
@@ -63,6 +67,26 @@
         		  "extension.vim_ctrl+pagedown"
             ],
         },
+
+        // search
+        {
+            "before": [
+                "<Enter>"
+            ],
+            "after": [
+                "n"
+            ],
+        },
+        {
+            "before": [
+                "<BackSpace>"
+            ],
+            "after": [
+                "N"
+            ],
+        },
+
+        // hover
         {
             "before": [
                 "<space>",
@@ -117,12 +141,14 @@
     "workbench.tree.indent": 22,
     "vim.hlsearch": true,
     "workbench.colorTheme": "GitHub Dark",
-
-    "terminal.integrated.mouseWheelScrollSensitivity": 0.01,
     "eslint.migration.2_x": "off",
     "[markdown]": {
         "editor.wordWrap": "on",
-        "editor.quickSuggestions": false
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        }
     },
     "cSpell.userWords": [
         "MIDDLEWARES",
@@ -138,11 +164,13 @@
     ],
     "explorer.confirmDragAndDrop": false,
     "workbench.colorCustomizations": {
-        "terminalCursor.foreground": "#ffffffcc"
     },
 
     "window.titleBarStyle": "custom",
     "window.customMenuBarAltFocus": false,
     "terminal.integrated.inheritEnv": false,
     "terminal.external.linuxExec": "xterm",
+    "terminal.integrated.persistentSessionScrollback": 0,
+    "html.format.contentUnformatted": "",
+    "terminal.integrated.scrollback": 0,
 }
