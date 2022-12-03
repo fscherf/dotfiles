@@ -1,8 +1,11 @@
 # variables ###################################################################
 export EDITOR="/usr/bin/vim -p"
 export TERM="screen-256color"
-export GIT_AUTHOR_NAME="Florian Scherf"
-export GIT_COMMITTER_NAME="Florian Scherf"
+
+if [ $UID -gt 0 ]; then
+    export GIT_AUTHOR_NAME="Florian Scherf"
+    export GIT_COMMITTER_NAME="Florian Scherf"
+fi
 
 # bindings ####################################################################
 set -o vi
@@ -17,7 +20,9 @@ bind -m vi "s":forward-char
 
 # path ########################################################################
 # dotfiles, local
-export PATH="$HOME/bin:$HOME/.dotfiles/bin"
+if [ $UID -gt 0 ]; then
+    export PATH="$HOME/bin:$HOME/.dotfiles/bin"
+fi
 
 # debian
 export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -77,8 +82,13 @@ prompt_command() {
 
     # flags
     FLAGS=
+
+    if [ $UID -eq 0 ]; then
+        FLAGS="root "
+    fi
+
     if [ -n "$SSH_CONNECTION" ]; then
-        FLAGS="ssh "
+        FLAGS="$FLAGS""ssh "
     fi
 
     if [ -n "$VIRTUAL_ENV" ]; then

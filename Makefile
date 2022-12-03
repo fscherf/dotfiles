@@ -39,6 +39,13 @@ pull:
 	cp ~/.config/Code/User/keybindings.json vscode
 	cp ~/.config/Code/User/settings.json vscode
 
+root-install:
+	[ -f ~/.bashrc.local ] || touch ~/.bashrc.local
+	[ -f ~/.vimrc.local ] || touch ~/.vimrc.local
+	cp .bashrc ~/.bashrc
+	cp .vimrc.minimal ~/.vimrc
+	cp .tmux.conf ~/.tmux.conf
+
 # cockpit #####################################################################
 cockpit:
 	$(MAKE) -C cockpit server
