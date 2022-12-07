@@ -1,5 +1,9 @@
 SHELL=/bin/bash
 
+FONT_NAME=SourceCodePro
+FONT_URL=https://github.com/adobe-fonts/source-code-pro/archive/1.017R.tar.gz
+FONT_DIRECTORY=/usr/share/fonts/truetype/$(FONT_NAME)
+
 .PHONY: cockpit
 
 
@@ -14,6 +18,17 @@ setup-debian:
 		wmctrl xdotool
 
 	sudo adduser $$USER docker
+
+# font
+uninstall-font:
+	sudo rm -rf $(FONT_DIRECTORY)
+	fc-cache -f -v
+
+install-font:
+	sudo mkdir $(FONT_DIRECTORY)
+	sudo wget $(FONT_URL) -O "$(FONT_DIRECTORY)/$(FONT_NAME).tar.gz"
+	sudo tar -xf "$(FONT_DIRECTORY)/$(FONT_NAME).tar.gz" -C $(FONT_DIRECTORY)
+	fc-cache -f -v
 
 # config ######################################################################
 install:
