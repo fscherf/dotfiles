@@ -1,0 +1,16 @@
+#!/bin/bash
+set -x
+
+DEVICE=/dev/video1
+
+
+if [ "$1" == "" ]; then
+    mplayer tv:// -tv device=$DEVICE
+
+elif [ "$1" == "mirror" ]; then
+    mplayer tv:// -tv device=$DEVICE -vf mirror
+
+elif [ "$1" == "setup" ]; then
+    # fix flickering by setting the power_line_frequency to europe
+    v4l2-ctl --set-ctrl power_line_frequency=1 --device=$DEVICE
+fi
