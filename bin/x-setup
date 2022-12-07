@@ -1,0 +1,5 @@
+#!/bin/bash
+set -x
+
+xset r rate 220 70
+webcam setup
