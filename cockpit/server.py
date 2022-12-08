@@ -2,7 +2,7 @@
 
 import subprocess
 
-from lona_bootstrap_5 import PrimaryButton
+from lona_bootstrap_5 import PrimaryButton, SecondaryButton
 from lona import LonaApp, LonaView
 
 from lona.html import (
@@ -216,6 +216,8 @@ class Index(LonaView):
 
             Div(
                 PrimaryButton('Refresh', _id='refresh'),
+                ' ',
+                SecondaryButton('Clear Selection', _id='clear-selection'),
                 _class='float-end',
             ),
         )
@@ -224,7 +226,12 @@ class Index(LonaView):
 
         while True:
             self.render_tables()
-            self.await_click(html=self.html)
+
+            input_event = self.await_click(html=self.html)
+
+            if input_event.node_has_id('clear-selection'):
+                self.server.state['x-windows'].clear()
+
 
 
 @app.route('/switch-x-windows(/)', interactive=False)
