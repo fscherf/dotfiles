@@ -22,6 +22,10 @@ from lona.html import (
 
 VERSION = 'v0.0'
 
+IGNORED_WINDOW_CLASSES = [
+    'nemo-desktop.Nemo-desktop',  # cinnamon desktop
+]
+
 
 # window manager helper #######################################################
 def raise_window_by_window_id(window_id):
@@ -67,6 +71,9 @@ def get_wm_state():
         desktop_id, line = line.strip().split(' ', 1)
         window_class, line = line.strip().split(' ', 1)
         _, window_title = line.strip().split(' ', 1)
+
+        if window_class in IGNORED_WINDOW_CLASSES:
+            continue
 
         desktop_id = int(desktop_id)
         window_id = int(window_id, base=16)
