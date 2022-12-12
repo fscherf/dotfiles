@@ -132,7 +132,6 @@ app.add_template('lona/frontend.js', """
 class SetupStateMiddleware:
     async def on_startup(self, data):
         data.server.state['x-windows'] = {}
-        data.server.state['f'] = get_wm_state
 
 
 @app.route('/')
