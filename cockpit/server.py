@@ -20,7 +20,7 @@ from lona.html import (
     Td,
 )
 
-VERSION = 'v0.0'
+VERSION = 'v0.1'
 
 IGNORED_WINDOW_CLASSES = [
     'nemo-desktop.Nemo-desktop',  # cinnamon desktop
