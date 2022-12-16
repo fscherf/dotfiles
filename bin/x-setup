@@ -3,3 +3,4 @@ set -x
 
 xset r rate 220 70
 webcam setup
+echo 0 | sudo tee /sys/class/leds/platform::mute/brightness
