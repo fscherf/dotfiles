@@ -173,4 +173,8 @@
     "terminal.integrated.persistentSessionScrollback": 0,
     "html.format.contentUnformatted": "",
     "terminal.integrated.scrollback": 0,
+    "editor.fontFamily": "'SourceCodePro','monospace', monospace",
+    "editor.fontLigatures": false,
+    "python.terminal.activateEnvironment": false,
+    "python.envFile": "",
 }
