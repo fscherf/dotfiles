@@ -61,6 +61,13 @@ root-install:
 	cp .vimrc.minimal ~/.vimrc
 	cp .tmux.conf ~/.tmux.conf
 
+# vscode ######################################################################
+setup-vscode:
+	code --install-extension vscodevim.vim
+	code --install-extension GitHub.github-vscode-theme
+	code --install-extension shardulm94.trailing-spaces
+	code --install-extension streetsidesoftware.code-spell-checker
+
 # cockpit #####################################################################
 cockpit:
 	$(MAKE) -C cockpit server
