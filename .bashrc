@@ -159,6 +159,7 @@ if [ -d ~/.pyenv ]; then
     eval "$(pyenv init --path)"
     eval "$(pyenv init -)"
 
+    unset PYENV_VERSION
 fi
 
 # local bashrc ################################################################
