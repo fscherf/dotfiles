@@ -177,4 +177,7 @@
     "editor.fontLigatures": false,
     "python.terminal.activateEnvironment": false,
     "python.envFile": "",
+    "scm.diffDecorationsGutterPattern": {
+        "added": true
+    },
 }
