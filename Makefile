@@ -12,10 +12,10 @@ all: install
 # debian ######################################################################
 setup-debian:
 	sudo apt install \
-		vim vim-nox tmux git tig make rsync xclip \
+		vim vim-nox tmux git tig make rsync \
 		python3 python3-venv \
 		docker docker.io docker-compose \
-		wmctrl xdotool
+		wmctrl xdotool xclip feh flameshot
 
 	sudo adduser $$USER docker
 
