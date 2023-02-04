@@ -180,4 +180,7 @@
     "scm.diffDecorationsGutterPattern": {
         "added": true
     },
+    "workspaceSidebar.folder": "~/vscode-workspaces",
+    "workspaceSidebar.depth": 25,
+    "workspaceSidebar.showFolderHierarchy": true,
 }

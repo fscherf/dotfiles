@@ -67,6 +67,7 @@ setup-vscode:
 	code --install-extension GitHub.github-vscode-theme
 	code --install-extension shardulm94.trailing-spaces
 	code --install-extension streetsidesoftware.code-spell-checker
+	code --install-extension sketchbuch.vsc-workspace-sidebar
 
 # cockpit #####################################################################
 cockpit:
