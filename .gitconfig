@@ -24,12 +24,12 @@
 	r = reset
 	rh = reset --hard
 
-	rbi = rebase -i --autosquash
-	rbmi = rebase -i master --autosquash
-
 	pretty-show = show -s --pretty='format:%h (\"%s\")'
 	patchcount = shortlog -s -n
 	meld = !git difftool $1^! --tool meld --no-prompt
+
+	reset-time = rebase -i --exec 'git commit --amend --no-edit --date=now'
+	reset-author = rebase -i --exec 'git commit --amend --no-edit --reset-author'
 
 [pull]
 	ff = only
