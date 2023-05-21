@@ -172,5 +172,11 @@ if [ -d ~/.pyenv ]; then
     unset PYENV_VERSION
 fi
 
+# cargo #######################################################################
+if [ -d ~/.cargo ]; then
+    source ~/.cargo/env
+
+fi
+
 # local bashrc ################################################################
 source ~/.bashrc.local
