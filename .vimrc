@@ -16,16 +16,19 @@ set cursorline
 set clipboard=unnamedplus
 set mouse=a
 
-let mapleader = " "
+let mapleader = ' '
 
 " theme -----------------------------------------------------------------------
 set background=dark
 
-" cursor
+" cursor and linenr
+hi clear LineNr
 hi clear CursorLine
 hi clear CursorLineNR
+hi LineNr ctermfg=darkgrey
 hi CursorLine cterm=NONE ctermbg=black
 hi ColorColumn cterm=NONE ctermbg=black
+hi CursorLineNR cterm=NONE ctermfg=white ctermbg=black
 
 " spell
 hi clear SpellBad
@@ -35,9 +38,15 @@ hi SpellBad cterm=underline
 hi clear TabLine
 hi clear TabLineSel
 hi clear TabLineFill
-hi TabLine ctermfg=grey ctermbg=none
+hi TabLine ctermfg=darkgrey ctermbg=none
 hi TabLineSel ctermfg=white ctermbg=none
 hi TabLineFill ctermfg=none ctermbg=none
+
+" pmenu
+hi Pmenu ctermbg=gray ctermfg=black
+hi PmenuSel ctermbg=darkgray ctermfg=white
+hi PmenuSbar ctermbg=gray ctermfg=None
+hi PmenuThumb ctermbg=black ctermfg=None
 
 " NERDTree
 hi clear VertSplit
@@ -48,6 +57,19 @@ hi StatusLine ctermfg=white ctermbg=none
 
 hi clear StatusLineNC
 hi StatusLineNC ctermfg=grey ctermbg=none
+
+" Syntastic
+hi SyntasticErrorSign ctermfg=red ctermbg=None
+hi SyntasticWarningSign ctermfg=yellow ctermbg=None
+
+" git gutter
+let g:gitgutter_override_sign_column_highlight = 0
+
+hi clear SignColumn
+hi GitGutterAdd ctermfg=green
+hi GitGutterChange ctermfg=blue
+hi GitGutterDelete ctermfg=red
+hi GitGutterChangeDelete ctermfg=red
 
 " mappings --------------------------------------------------------------------
 nnoremap Q <nop>
@@ -126,20 +148,24 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
-Plugin 'sjl/badwolf'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Valloric/MatchTagAlways'
 Plugin 'ervandew/supertab'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'junegunn/fzf'
 
 call vundle#end()
 filetype plugin indent on
 
+" plugins ---------------------------------------------------------------------
 " Syntastic
-hi SignColumn ctermbg=None
 let g:syntastic_check_on_open = 1
-let g:syntastic_python_python_exec = '/usr/bin/env python'
-let g:syntastic_python_checkers = ["flake8"]
+let syntastic_style_error_symbol = '>>'
+let syntastic_style_warning_symbol = '>>'
+
+let g:syntastic_python_checkers = ['flake8']
 
 " gitgutter
 map <silent> <C-g> :GitGutterToggle<CR>
@@ -149,23 +175,36 @@ imap <silent> <C-g> <Esc>:GitGutterToggle<CR><insert>
 map <Leader>t :NERDTreeToggle<CR>:redraw!<CR>
 map <silent> <Leader>t :NERDTreeToggle<CR>
 
-let NERDTreeQuitOnOpen=1
 let NERDTreeIgnore = ['\.pyc$', '__pycache__', '\.egg-info$']
-let NERDTreeMapOpenInTab='T'
-let NERDTreeMapToggleHidden='i'
-let NERDTreeMapToggleFilters='i'
-let NERDTreeMapUpdirKeepOpen='A'
-let NERDTreeMapActivateNode='u'
-let NERDTreeMapChangeRoot='U'
-let NERDTreeMapToggleZoom = 'f'
-let NERDTreeMapOpenVSplit=''
-let NERDTreeMapOpenSplit=''
-let NERDTreeMapPreviewSplit=''
+
+let NERDTreeQuitOnOpen = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+let NERDTreeMapOpenInTab = 'T'
+let NERDTreeMapToggleHidden = 'i'
+let NERDTreeMapToggleFilters = 'i'
+let NERDTreeMapUpdirKeepOpen = 'A'
+let NERDTreeMapActivateNode = 'u'
+let NERDTreeMapChangeRoot = 'U'
+let NERDTreeMapToggleZoom = 'f'
+let NERDTreeMapJumpRoot = 'g'
+
+let NERDTreeMapPreview = ''
+let NERDTreeMapPreviewSplit = ''
+let NERDTreeMapPreviewVSplit = ''
+let NERDTreeMapOpenVSplit = ''
+let NERDTreeMapOpenSplit = ''
+
+" Jedi
+let g:jedi#use_tabs_not_buffers = 1
+let g:jedi#completions_command = '<leader><Tab>'
+
+" FZF
+map <silent>f :FZF<CR>
+
+let $FZF_DEFAULT_COMMAND='git ls-files || find'
+let g:fzf_action = {'enter': 'tab split'}
 
 " local vimrc -----------------------------------------------------------------
 source ~/.vimrc.local
-
