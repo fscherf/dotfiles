@@ -34,7 +34,6 @@ install-font:
 install:
 	[ -d ~/.vim/bundle/Vundle.vim ] || (git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim; vim +VundleInstall)
 	[ -d ~/bin ] || mkdir ~/bin
-	[ -d ~/.config/Code/User ] || mkdir ~/.config/Code/User
 	[ -f ~/.bashrc.local ] || touch ~/.bashrc.local
 	[ -f ~/.vimrc.local ] || touch ~/.vimrc.local
 	cp .bashrc ~/.bashrc
@@ -42,8 +41,6 @@ install:
 	cp .tmux.conf ~/.tmux.conf
 	cp .tigrc ~/.tigrc
 	cp .vimrc ~/.vimrc
-	cp vscode/keybindings.json ~/.config/Code/User
-	cp vscode/settings.json ~/.config/Code/User
 
 pull:
 	cp ~/.bashrc .bashrc
@@ -51,8 +48,6 @@ pull:
 	cp ~/.tmux.conf .tmux.conf
 	cp ~/.tigrc .tigrc
 	cp ~/.vimrc .vimrc
-	cp ~/.config/Code/User/keybindings.json vscode
-	cp ~/.config/Code/User/settings.json vscode
 
 root-install:
 	[ -f ~/.bashrc.local ] || touch ~/.bashrc.local
@@ -60,14 +55,6 @@ root-install:
 	cp .bashrc ~/.bashrc
 	cp .vimrc.minimal ~/.vimrc
 	cp .tmux.conf ~/.tmux.conf
-
-# vscode ######################################################################
-setup-vscode:
-	code --install-extension vscodevim.vim
-	code --install-extension GitHub.github-vscode-theme
-	code --install-extension shardulm94.trailing-spaces
-	code --install-extension streetsidesoftware.code-spell-checker
-	code --install-extension sketchbuch.vsc-workspace-sidebar
 
 # cockpit #####################################################################
 cockpit:
