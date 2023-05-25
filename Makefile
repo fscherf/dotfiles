@@ -12,12 +12,12 @@ all: install
 # debian ######################################################################
 setup-debian:
 	sudo apt install \
-		vim vim-nox tmux git tig make rsync \
-		python3 python3-venv \
-		docker docker.io docker-compose \
-		wmctrl xdotool xclip feh flameshot
+		vim vim-nox tmux git tig make rsync fd-find htop \
+		python3 python3-venv
 
-	sudo adduser $$USER docker
+setup-debian-desktop:
+	sudo apt install \
+		wmctrl xdotool xclip feh flameshot
 
 # font
 uninstall-font:
@@ -66,9 +66,6 @@ cockpit:
 # development envs ############################################################
 install-pyenv:
 	[ -d ~/.pyenv ] || git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-
-	sudo apt update
-
 	sudo apt install \
 		make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
 		libsqlite3-dev wget curl llvm libncursesw5-dev xz-utils tk-dev \
@@ -78,3 +75,8 @@ install-npm:
 	sudo install npm
 	sudo npm install --global n
 	sudo n install lts
+
+install-docker:
+	sudo apt install docker docker.io docker-compose
+	sudo adduser $$USER docker
+
