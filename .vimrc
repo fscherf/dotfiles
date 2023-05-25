@@ -16,8 +16,6 @@ set cursorline
 set clipboard=unnamedplus
 set mouse=a
 
-let mapleader = ' '
-
 " theme -----------------------------------------------------------------------
 set background=dark
 
@@ -62,9 +60,6 @@ hi StatusLineNC ctermfg=grey ctermbg=none
 hi SyntasticErrorSign ctermfg=red ctermbg=None
 hi SyntasticWarningSign ctermfg=yellow ctermbg=None
 
-" git gutter
-let g:gitgutter_override_sign_column_highlight = 0
-
 hi clear SignColumn
 hi GitGutterAdd ctermfg=green
 hi GitGutterChange ctermfg=blue
@@ -87,11 +82,6 @@ map N <PageUp>
 nnoremap <Enter> n
 nnoremap <BS> N
 
-" toggles
-map <silent> <Leader>l :set invlist<CR>
-map <silent> <Leader>p :set invpaste<CR>
-map <silent> <leader>n :set invnumber<CR>
-
 " close
 map <silent> q :q!<CR>
 map <silent> w :w<CR>:redraw!<CR>
@@ -104,13 +94,18 @@ map <silent> <C-f> i<C-x><C-f>
 imap <silent> <C-o> <C-x><C-o>
 imap <silent> <C-f> <C-x><C-f>
 
-" hlsearch
-map <silent> <leader>h :nohl<CR>
+" toggles
+map <silent> l :nohl<CR>
+map <silent> L :set invlist<CR>
 
 " macros ----------------------------------------------------------------------
 iab yybs #!/bin/bash
 iab yyps #!/usr/bin/env python<CR># -*- coding: utf-8 -*-
 iab yyap # Author: Florian Scherf <mail@florianscherf.de>
+iab yyae ä
+iab yyue ü
+iab yyoe ö
+iab yyss ß
 
 " tabs ------------------------------------------------------------------------
 map <silent> H :tabprevious<CR>
@@ -168,12 +163,13 @@ let syntastic_style_warning_symbol = '>>'
 let g:syntastic_python_checkers = ['flake8']
 
 " gitgutter
+let g:gitgutter_override_sign_column_highlight = 0
+
 map <silent> <C-g> :GitGutterToggle<CR>
 imap <silent> <C-g> <Esc>:GitGutterToggle<CR><insert>
 
 " NERDTree
-map <Leader>t :NERDTreeToggle<CR>:redraw!<CR>
-map <silent> <Leader>t :NERDTreeToggle<CR>
+map <silent>F :NERDTreeToggle<CR>:redraw!<CR>
 
 let NERDTreeIgnore = ['\.pyc$', '__pycache__', '\.egg-info$']
 
@@ -189,6 +185,7 @@ let NERDTreeMapActivateNode = 'u'
 let NERDTreeMapChangeRoot = 'U'
 let NERDTreeMapToggleZoom = 'f'
 let NERDTreeMapJumpRoot = 'g'
+let NERDTreeMapQuit = '<Esc>'
 
 let NERDTreeMapPreview = ''
 let NERDTreeMapPreviewSplit = ''
@@ -198,12 +195,12 @@ let NERDTreeMapOpenSplit = ''
 
 " Jedi
 let g:jedi#use_tabs_not_buffers = 1
-let g:jedi#completions_command = '<leader><Tab>'
+"let g:jedi#completions_command = '<leader><Tab>'
 
 " FZF
 map <silent>f :FZF<CR>
 
-let $FZF_DEFAULT_COMMAND='git ls-files || find'
+let $FZF_DEFAULT_COMMAND='fdfind --type f --strip-cwd-prefix --hidden --follow --exclude .git || find'
 let g:fzf_action = {'enter': 'tab split'}
 
 " local vimrc -----------------------------------------------------------------
