@@ -1,6 +1,7 @@
 # variables ###################################################################
 export EDITOR="/usr/bin/vim -p"
 export TERM="screen-256color"
+export SSH_AUTH_SOCK="~/.ssh/ssh-agent.sock"
 
 if [ $UID -gt 0 ]; then
     export GIT_AUTHOR_NAME="Florian Scherf"
@@ -159,6 +160,10 @@ git-reset-date() {
 
 check-mouse-battery() {
     upower -i $(upower -e | command grep mouse)
+}
+
+start-ssh-agent() {
+    ssh-agent -a $SSH_AUTH_SOCK
 }
 
 # pyenv #######################################################################
