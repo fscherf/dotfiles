@@ -200,7 +200,7 @@ let g:jedi#use_tabs_not_buffers = 1
 " FZF
 map <silent>f :FZF<CR>
 
-let $FZF_DEFAULT_COMMAND='fdfind --type f --strip-cwd-prefix --hidden --follow --exclude .git || find'
+let $FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git || git ls-files'
 let g:fzf_action = {'enter': 'tab split'}
 
 " local vimrc -----------------------------------------------------------------
