@@ -4,5 +4,11 @@ set -x
 
 sudo apt update
 sudo apt upgrade
-sudo flatpak update
-sudo fstrim -av
+
+which flatpak && {
+    sudo flatpak update
+}
+
+which fstrim && {
+    sudo fstrim -av
+}
