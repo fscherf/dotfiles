@@ -43,7 +43,6 @@ alias rgrep='grep -rnI'
 alias feh='feh --scale-down'
 alias vim='vim -p'
 alias kw='date +%V'
-alias reload='source ~/.bashrc'
 
 # tmenu
 alias trs='tmux rename-session $(echo "$(basename $PWD)" | sed -r "s/\./_/g")'
@@ -154,14 +153,6 @@ dd-progress() {
     fi
 }
 
-git-reset-date() {
-    GIT_COMMITTER_DATE="$(date)" git commit --amend --no-edit --date "$(date)"
-}
-
-check-mouse-battery() {
-    upower -i $(upower -e | command grep mouse)
-}
-
 start-ssh-agent() {
     if [ ! -S $SSH_AUTH_SOCK ]; then
         ssh-agent -a $SSH_AUTH_SOCK
@@ -184,7 +175,6 @@ fi
 # cargo #######################################################################
 if [ -d ~/.cargo ]; then
     source ~/.cargo/env
-
 fi
 
 # local bashrc ################################################################
