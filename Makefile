@@ -12,7 +12,7 @@ all: install
 # debian ######################################################################
 setup-debian:
 	sudo apt install \
-		vim vim-nox tmux git tig make rsync fd-find htop \
+		vim vim-nox tmux git tig make rsync fd-find htop tree \
 		python3 python3-venv
 
 setup-debian-desktop:
