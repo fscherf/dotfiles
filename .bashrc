@@ -163,7 +163,11 @@ check-mouse-battery() {
 }
 
 start-ssh-agent() {
-    ssh-agent -a $SSH_AUTH_SOCK
+    if [ ! -S $SSH_AUTH_SOCK ]; then
+        ssh-agent -a $SSH_AUTH_SOCK
+    fi
+
+    find ~/.ssh/ -type f -exec grep -l "PRIVATE" {} \; | xargs ssh-add
 }
 
 # pyenv #######################################################################
