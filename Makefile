@@ -38,6 +38,7 @@ install:
 	[ -f ~/.bashrc.local ] || touch ~/.bashrc.local
 	[ -f ~/.vimrc.local ] || touch ~/.vimrc.local
 	cp terminator.cfg ~/.config/terminator/config
+	cp .profile ~/.profile
 	cp .bashrc ~/.bashrc
 	cp .gitconfig ~/.gitconfig
 	cp .tmux.conf ~/.tmux.conf
