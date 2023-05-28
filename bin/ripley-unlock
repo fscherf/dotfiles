@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -x
+set -e
+
+sudo cryptsetup luksOpen /dev/disk/by-uuid/ff81e24a-4bcc-446d-8c9c-a197613fe93d wd-white-8tb
+
+if [ ! -d /home/fscherf/data/wd-white-8tb ]; then
+    mkdir -p /home/fscherf/data/wd-white-8tb
+fi
+
+sudo mount /dev/mapper/wd-white-8tb /home/fscherf/data/wd-white-8tb

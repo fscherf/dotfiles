@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -x
+set -e
+
+sudo umount /home/fscherf/data/wd-white-8tb
+sudo cryptsetup luksClose wd-white-8tb
