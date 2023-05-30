@@ -150,6 +150,7 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'junegunn/fzf'
+Plugin 'cespare/vim-toml'
 
 call vundle#end()
 filetype plugin indent on
