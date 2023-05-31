@@ -73,7 +73,7 @@ install-pyenv:
 		libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 
 install-npm:
-	sudo install npm
+	sudo apt install npm
 	sudo npm install --global n
 	sudo n install lts
 
