@@ -13,7 +13,6 @@ set foldlevel=99
 set timeoutlen=200
 set colorcolumn=80
 set cursorline
-set clipboard=unnamedplus
 set mouse=a
 
 " theme -----------------------------------------------------------------------
@@ -135,6 +134,22 @@ function! Trim()
 endfunction
 
 command! -nargs=0 Trim :call Trim()
+
+" clipboad --------------------------------------------------------------------
+function! Viminfop()
+    rviminfo
+    normal! p
+endfunction
+
+function! ViminfoP()
+    rviminfo
+    normal! P
+endfunction
+
+autocmd TextYankPost * :wviminfo
+
+nnoremap p :call Viminfop()<CR>
+nnoremap P :call ViminfoP()<CR>
 
 " Vundle ----------------------------------------------------------------------
 set nocompatible
