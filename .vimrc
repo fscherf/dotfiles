@@ -166,6 +166,8 @@ let g:syntastic_python_checkers = ['flake8']
 " gitgutter
 let g:gitgutter_override_sign_column_highlight = 0
 
+autocmd BufWritePost * GitGutter
+
 map <silent> <C-g> :GitGutterToggle<CR>
 imap <silent> <C-g> <Esc>:GitGutterToggle<CR><insert>
 
