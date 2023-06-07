@@ -199,6 +199,7 @@ let NERDTreeMapOpenSplit = ''
 " Jedi
 let g:jedi#use_tabs_not_buffers = 1
 "let g:jedi#completions_command = '<leader><Tab>'
+let g:jedi#rename_command_keep_name = '<F2>'
 
 " FZF
 map <silent>f :FZF<CR>
