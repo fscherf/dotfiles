@@ -45,6 +45,10 @@ hi PmenuSel ctermbg=darkgray ctermfg=white
 hi PmenuSbar ctermbg=gray ctermfg=None
 hi PmenuThumb ctermbg=black ctermfg=None
 
+" trailing whitespace
+highlight WhitespaceEOL ctermbg=red guibg=red
+call matchadd('WhitespaceEOL', '\s\+$')
+
 " NERDTree
 hi clear VertSplit
 highlight VertSplit ctermfg=grey ctermbg=none
@@ -109,12 +113,11 @@ iab yyss ß
 " tabs ------------------------------------------------------------------------
 map <silent> H :tabprevious<CR>
 map <silent> S :tabnext<CR>
-
 map <silent> ! :tabmove -1<CR>
 map <silent> @ :tabmove +1<CR>
 map <silent> + :tabnew<CR>
 
-" filetype settings
+" filetype settings -----------------------------------------------------------
 filetype plugin indent on
 
 autocmd FileType rst,python,sh,javascript,css,scss,yaml,typescript,markdown setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
@@ -124,9 +127,6 @@ autocmd FileType gitrebase                                                  setl
 
 " functions -------------------------------------------------------------------
 " Trim
-highlight WhitespaceEOL ctermbg=red guibg=red
-call matchadd('WhitespaceEOL', '\s\+$')
-
 function! Trim()
   let lineNumber = line('.')
   %s/\s*$//
