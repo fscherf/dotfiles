@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -o pipefail
+
+SOURCE="/home/fscherf/data/*"
+DESTINATION="/srv/storage/seagate-red-8tb"
+LOG_FILE="$DESTINATION/backup.log"
+
+
+function main() {
+    time {
+        date
+        echo ""
+
+        set -x
+
+        rsync --recursive --delete --update --verbose \
+            $SOURCE $DESTINATION
+    }
+}
+
+
+if [ "$1" == "main" ]; then
+    main
+else
+    $0 main 2>&1 | cat > $LOG_FILE
+fi

@@ -3,5 +3,10 @@
 set -x
 set -e
 
+# wd-white-8tb (data)
 sudo umount /home/fscherf/data/wd-white-8tb
 sudo cryptsetup luksClose wd-white-8tb
+
+# seagate-red-8tb (backup)
+sudo umount /srv/storage/seagate-red-8tb
+sudo cryptsetup luksClose seagate-red-8tb

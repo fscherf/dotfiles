@@ -3,6 +3,7 @@
 set -x
 set -e
 
+# wd-white-8tb (data)
 sudo cryptsetup luksOpen /dev/disk/by-uuid/ff81e24a-4bcc-446d-8c9c-a197613fe93d wd-white-8tb
 
 if [ ! -d /home/fscherf/data/wd-white-8tb ]; then
@@ -10,3 +11,12 @@ if [ ! -d /home/fscherf/data/wd-white-8tb ]; then
 fi
 
 sudo mount /dev/mapper/wd-white-8tb /home/fscherf/data/wd-white-8tb
+
+# seagate-red-8tb (backup)
+sudo cryptsetup luksOpen /dev/disk/by-uuid/fa19c561-7d93-4dfc-9314-a332679d0ef3 seagate-red-8tb
+
+if [ ! -d /srv/storage/seagate-red-8tb ]; then
+    mkdir -p /srv/storage/seagate-red-8tb
+fi
+
+sudo mount /dev/mapper/seagate-red-8tb /srv/storage/seagate-red-8tb
