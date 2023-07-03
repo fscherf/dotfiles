@@ -19,7 +19,7 @@ setup-debian-desktop:
 	sudo apt install \
 		terminator ssh-askpass \
 		wmctrl xdotool xclip \
-		mplayer feh \
+		mplayer v4l-utils feh \
 		flameshot
 
 # font
