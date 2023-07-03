@@ -17,7 +17,10 @@ setup-debian:
 
 setup-debian-desktop:
 	sudo apt install \
-		wmctrl xdotool xclip feh flameshot
+		terminator ssh-askpass \
+		wmctrl xdotool xclip \
+		mplayer feh \
+		flameshot
 
 # font
 uninstall-font:
