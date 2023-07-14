@@ -58,6 +58,7 @@ if [ $UID -gt 0 ]; then
     alias service='sudo service'
     alias systemctl='sudo systemctl'
     alias journalctl='sudo journalctl'
+    alias dmesg='sudo dmesg'
 fi
 
 # prompt command ##############################################################
