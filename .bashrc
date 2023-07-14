@@ -45,7 +45,7 @@ alias kw='date +%V'
 # tmenu
 alias trs='tmux rename-session $(echo "$(basename $PWD)" | sed -r "s/\./_/g")'
 alias trw='tmux rename-window $(echo "$(basename $PWD)" | sed -r "s/\./_/g")'
-alias tfs='$(tmux show-env -s |grep "^SSH_")'
+alias tfs='eval $(tmux show-env -s |grep "^SSH_")'
 
 # sudo
 if [ $UID -gt 0 ]; then
