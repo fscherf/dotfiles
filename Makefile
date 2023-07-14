@@ -37,7 +37,7 @@ install-font:
 install:
 	[ -d ~/.vim/bundle/Vundle.vim ] || (git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim; vim +VundleInstall)
 	[ -d ~/bin ] || mkdir ~/bin
-	[ -d ~/.config/terminator ] || mkdir ~/.config/terminator
+	[ -d ~/.config/terminator ] || mkdir -p ~/.config/terminator
 	[ -f ~/.bashrc.local ] || touch ~/.bashrc.local
 	[ -f ~/.vimrc.local ] || touch ~/.vimrc.local
 	cp terminator.cfg ~/.config/terminator/config
