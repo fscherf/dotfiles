@@ -1,7 +1,6 @@
 # variables ###################################################################
 export EDITOR="/usr/bin/vim -p"
 export TERM="screen-256color"
-export SSH_AUTH_SOCK="$HOME/.ssh/ssh-agent.sock"
 
 if [ $UID -gt 0 ]; then
     export GIT_AUTHOR_NAME="Florian Scherf"
@@ -46,6 +45,7 @@ alias kw='date +%V'
 # tmenu
 alias trs='tmux rename-session $(echo "$(basename $PWD)" | sed -r "s/\./_/g")'
 alias trw='tmux rename-window $(echo "$(basename $PWD)" | sed -r "s/\./_/g")'
+alias tfs='$(tmux show-env -s |grep "^SSH_")'
 
 # sudo
 if [ $UID -gt 0 ]; then
