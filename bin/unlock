@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -x
+set -e
+
+HOST=$1
+
+if [ "$HOST" == "" ]; then
+    HOST=$HOSTNAME
+fi
+
+# ripley ######################################################################
+if [ "$HOST" == "ripley" ]; then
+
+    # wd-white-8tb (data)
+    sudo cryptsetup luksOpen /dev/disk/by-uuid/ff81e24a-4bcc-446d-8c9c-a197613fe93d wd-white-8tb
+
+    if [ ! -d /home/fscherf/data/wd-white-8tb ]; then
+        mkdir -p /home/fscherf/data/wd-white-8tb
+    fi
+
+    sudo mount /dev/mapper/wd-white-8tb /home/fscherf/data/wd-white-8tb
+
+    # seagate-red-8tb (backup)
+    sudo cryptsetup luksOpen /dev/disk/by-uuid/fa19c561-7d93-4dfc-9314-a332679d0ef3 seagate-red-8tb
+
+    if [ ! -d /srv/storage/seagate-red-8tb ]; then
+        mkdir -p /srv/storage/seagate-red-8tb
+    fi
+
+    sudo mount /dev/mapper/seagate-red-8tb /srv/storage/seagate-red-8tb
+
+    exit 0
+fi
+
+# clerk #######################################################################
+if [ "$HOST" == "clerk" ]; then
+
+    # sandisk-128gb (data)
+    sudo cryptsetup luksOpen /dev/disk/by-uuid/7f25f969-7684-47aa-8b55-1f6e9eeefcbb sandisk-128gb
+
+    if [ ! -d /home/fscherf/data/sandisk-128gb ]; then
+        mkdir -p /home/fscherf/data/sandisk-128gb
+    fi
+
+    sudo mount /dev/mapper/sandisk-128gb /home/fscherf/data/sandisk-128gb
+
+    exit 0
+fi
+
+# catch all
+exit 1

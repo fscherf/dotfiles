@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -x
+set -e
+
+HOST=$1
+
+if [ "$HOST" == "" ]; then
+    HOST=$HOSTNAME
+fi
+
+# ripley ######################################################################
+if [ "$HOST" == "ripley" ]; then
+
+    # wd-white-8tb (data)
+    sudo umount /home/fscherf/data/wd-white-8tb
+    sudo cryptsetup luksClose wd-white-8tb
+
+    # seagate-red-8tb (backup)
+    sudo umount /srv/storage/seagate-red-8tb
+    sudo cryptsetup luksClose seagate-red-8tb
+
+    exit 0
+fi
+
+# clerk #######################################################################
+if [ "$HOST" == "clerk" ]; then
+
+    # sandisk-128 (data)
+    sudo umount /home/fscherf/data/sandisk-128
+    sudo cryptsetup luksClose sandisk-128
+
+    exit 0
+fi
+
+# catch all
+exit 1
