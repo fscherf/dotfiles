@@ -27,8 +27,8 @@ fi
 if [ "$HOST" == "clerk" ]; then
 
     # sandisk-128 (data)
-    sudo umount /home/fscherf/data/sandisk-128
-    sudo cryptsetup luksClose sandisk-128
+    sudo umount /home/fscherf/data/sandisk-128gb
+    sudo cryptsetup luksClose sandisk-128gb
 
     exit 0
 fi
