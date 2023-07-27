@@ -13,12 +13,16 @@ fi
 if [ "$HOST" == "ripley" ]; then
 
     # wd-white-8tb (data)
-    sudo umount /home/fscherf/data/wd-white-8tb
-    sudo cryptsetup luksClose wd-white-8tb
+    name="wd-white-8tb"
+
+    sudo umount "/home/fscherf/data/$name"
+    sudo cryptsetup luksClose "$name"
 
     # seagate-red-8tb (backup)
-    sudo umount /srv/storage/seagate-red-8tb
-    sudo cryptsetup luksClose seagate-red-8tb
+    name="seagate-red-8tb"
+
+    sudo umount "/srv/storage/$name"
+    sudo cryptsetup luksClose "$name"
 
     exit 0
 fi
@@ -26,9 +30,17 @@ fi
 # clerk #######################################################################
 if [ "$HOST" == "clerk" ]; then
 
-    # sandisk-128 (data)
-    sudo umount /home/fscherf/data/sandisk-128gb
-    sudo cryptsetup luksClose sandisk-128gb
+    # kingston-128gb-1 (data)
+    name="kingston-128gb-1"
+
+    sudo umount "/home/fscherf/data/$name"
+    sudo cryptsetup luksClose "$name"
+
+    # kingston-128gb-2 (data)
+    name="kingston-128gb-2"
+
+    sudo umount "/home/fscherf/data/$name"
+    sudo cryptsetup luksClose "$name"
 
     exit 0
 fi

@@ -36,14 +36,40 @@ fi
 # clerk #######################################################################
 if [ "$HOST" == "clerk" ]; then
 
-    # sandisk-128gb (data)
-    sudo cryptsetup luksOpen /dev/disk/by-uuid/7f25f969-7684-47aa-8b55-1f6e9eeefcbb sandisk-128gb
+    # kingston-128gb-1 (data)
+    name="kingston-128gb-1"
+    path="/home/fscherf/data/$name"
+    uuid="359ab777-6a89-4f43-9649-b637870dc3c4"
+    device="/dev/disk/by-uuid/$uuid"
+    mapper_device="/dev/mapper/$name"
 
-    if [ ! -d /home/fscherf/data/sandisk-128gb ]; then
-        mkdir -p /home/fscherf/data/sandisk-128gb
+    if [ -e "$device" ]; then
+        sudo cryptsetup luksOpen "$device" "$name"
+
+        if [ ! -d "$path" ]; then
+            mkdir -p "$path"
+        fi
+
+        sudo mount "$mapper_device" "$path"
     fi
 
-    sudo mount /dev/mapper/sandisk-128gb /home/fscherf/data/sandisk-128gb
+    # kingston-128gb-2 (backup)
+    name="kingston-128gb-2"
+    path="/srv/storage/$name"
+    uuid="a64217e9-63fa-44f9-94b8-697be185add6"
+    device="/dev/disk/by-uuid/$uuid"
+    mapper_device="/dev/mapper/$name"
+
+    if [ -e "$device" ]; then
+        sudo cryptsetup luksOpen "$device" "$name"
+
+        if [ ! -d "$path" ]; then
+            sudo mkdir -p "$path"
+            sudo chown fscherf:fscherf $path
+        fi
+
+        sudo mount "$mapper_device" "$path"
+    fi
 
     exit 0
 fi
