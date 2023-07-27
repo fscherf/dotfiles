@@ -1,0 +1,93 @@
+#!/usr/bin/python3
+
+import platform
+import subprocess
+import os
+
+DIRECTORY_MAX_LENGTH = 1
+BRANCH_MAX_LENGTH = 30
+
+COLOR_RED = r'\[\e[1;31m\]'
+COLOR_GREEN = r'\[\e[1;32m\]'
+COLOR_BLUE = r'\[\e[1;34m\]'
+COLOR_CYAN = r'\[\e[1;36m\]'
+COLOR_RESET = r'\[\e[0m\]'
+
+UID = os.environ.get('UID', '0')
+HOME = os.environ.get('HOME', '')
+USER = os.environ.get('USER', 'who?')
+HOSTNAME = platform.uname()[1]
+PWD = os.environ.get('PWD', 'where?')
+LAST_STATUS = os.environ.get('LAST_STATUS', '0')
+
+
+def color(string, color):
+    return f'{color}{string}{COLOR_RESET}'
+
+
+def call(command):
+    try:
+        return 0, subprocess.check_output(
+            command,
+            stderr=subprocess.DEVNULL,
+        ).decode().strip()
+
+    except Exception:
+        return 1, ''
+
+
+# prompt parts ################################################################
+# tail
+if LAST_STATUS == '0':
+    tail = color('$ ', COLOR_GREEN)
+
+else:
+    tail = color(f'{LAST_STATUS} $ ', COLOR_RED)
+
+# directory
+directory = PWD
+
+if directory.startswith(HOME):
+    directory = f'~{directory[len(HOME):]}'
+
+long_directory = len(directory) > DIRECTORY_MAX_LENGTH
+directory = color(directory, COLOR_BLUE)
+
+# git branch
+exit_code, branch = call(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
+
+is_git = exit_code == 0
+long_branch = len(branch) > BRANCH_MAX_LENGTH
+branch = color(branch, COLOR_CYAN)
+
+# flags
+flags = []
+
+if UID == '0':
+    flags.append('root')
+
+if 'SSH_CONNECTION' in os.environ:
+    flags.append('ssh')
+
+if 'VIRTUAL_ENV' in os.environ:
+    flags.append('env')
+
+# prompt ######################################################################
+if long_directory:
+    print(directory)
+
+if is_git and long_branch:
+    print(branch)
+
+if flags:
+    print(color(' '.join(flags), COLOR_RED), end=' ')
+
+print(color(f'{USER}@{HOSTNAME}', COLOR_GREEN), end=' ')
+
+if not long_directory:
+    print(directory, end=' ')
+
+if is_git and not long_branch:
+    print(branch, end=' ')
+
+print(tail)

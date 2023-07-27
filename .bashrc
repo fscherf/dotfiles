@@ -62,60 +62,12 @@ if [ $UID -gt 0 ]; then
 fi
 
 # prompt command ##############################################################
-prompt_command() {
-    # exitcode
-    if [ $? == 0 ]; then
-        LAST_STATUS="\[\e[1;32m\]\$\[\e[0m\]"
-        export PS2="\[\e[1;32m\]\$\[\e[0m\] "
-    else
-        LAST_STATUS="\[\e[1;31m\]$? \$\[\e[0m\]"
-        export PS2="\[\e[1;31m\]\$\[\e[0m\] "
-    fi
-
-    # git
-    BRANCH=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
-    if [ $? == 0 ]; then
-        BRANCH=" \[\e[1;36m\]$BRANCH\[\e[0m\]"
-    else
-        BRANCH=
-    fi
-
-    # flags
-    FLAGS=
-
-    if [ $UID -eq 0 ]; then
-        FLAGS="root "
-    fi
-
-    if [ -n "$SSH_CONNECTION" ]; then
-        FLAGS="$FLAGS""ssh "
-    fi
-
-    if [ -n "$VIRTUAL_ENV" ]; then
-        FLAGS="$FLAGS""env "
-    fi
-
-    FLAGS="\[\e[1;31m\]$FLAGS\[\e[0m\]"
-
-    # presenter mode
-    if ! [ -z ${PRESENTER_MODE} ]; then
-        export PS1="$LAST_STATUS "
-        return
-    fi
-
-    # PS1
-    if [ "$PWD" == "$HOME" ]; then
-        export PS1="$FLAGS\[\e[1;32m\]\u@\h\[\e[0m\] \[\e[1;34m\]~\[\e[0m\]$BRANCH $LAST_STATUS "
-    else
-        export PS1="\[\e[1;34m\]\w\[\e[0m\]\n$FLAGS\[\e[1;32m\]\u@\h\[\e[0m\]$BRANCH $LAST_STATUS "
-    fi
-}
-
+prompt_command() {                  
+    export LAST_STATUS=$?           
+    export PS1=$(bash-prompt)       
+}                                   
+                                    
 export PROMPT_COMMAND=prompt_command
-
-presenter-mode() {
-    export PRESENTER_MODE=$1
-}
 
 # functions ###################################################################
 apt-cache() {
