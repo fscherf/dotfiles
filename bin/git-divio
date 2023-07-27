@@ -4,3 +4,5 @@ set -x
 
 git config user.name "Florian Scherf"
 git config user.email "florian.scherf@divio.ch"
+git config user.signingkey "3849E9CC4F7E80A22931864FFBF4664C511A6949"
+git config commit.gpgsign "true"
