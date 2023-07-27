@@ -13,7 +13,7 @@ COLOR_BLUE = r'\[\e[1;34m\]'
 COLOR_CYAN = r'\[\e[1;36m\]'
 COLOR_RESET = r'\[\e[0m\]'
 
-UID = os.environ.get('UID', '0')
+UID = os.getuid()
 HOME = os.environ.get('HOME', '')
 USER = os.environ.get('USER', 'who?')
 HOSTNAME = platform.uname()[1]
@@ -63,7 +63,7 @@ branch = color(branch, COLOR_CYAN)
 # flags
 flags = []
 
-if UID == '0':
+if UID == 0:
     flags.append('root')
 
 if 'SSH_CONNECTION' in os.environ:
