@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 set -x
 
 DEVICE=/dev/video0
@@ -11,6 +12,11 @@ elif [ "$1" == "mirror" ]; then
     mplayer tv:// -tv device=$DEVICE -vf mirror
 
 elif [ "$1" == "setup" ]; then
+
     # fix flickering by setting the power_line_frequency to europe
-    v4l2-ctl --set-ctrl power_line_frequency=1 --device=$DEVICE
+    v4l2-ctl --device=$DEVICE --set-ctrl power_line_frequency=1
+
+    # set zoom level and disable automatic zooming
+    v4l2-ctl --device=$DEVICE --set-ctrl focus_automatic_continuous=0
+    v4l2-ctl --device=$DEVICE --set-ctrl focus_absolute=0
 fi
