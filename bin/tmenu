@@ -52,9 +52,9 @@ while true; do
 
     # new session
     if [ "$USER_INPUT" == "!new-session" ]; then
-        new-session "$(get-unnamed-session-name)"
+        USER_INPUT="$(get-unnamed-session-name)"
 
-        continue
+        new-session "$USER_INPUT"
     fi
 
     # expand !scratchpad to session name "0"
