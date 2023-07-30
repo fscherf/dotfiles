@@ -1,313 +1,66 @@
-#!/usr/bin/env python3
+#!/bin/bash
 
-from functools import partial
-from curses import panel
-import subprocess
-import curses
-import os
+TEMP_FILE=$(mktemp)
 
-HISTORY_PATH = os.path.expanduser('~/.tmenu_history')
-TMUX_CONF_PATH = os.path.expanduser('~/.dotfiles/tmenu-tmux.conf')
-HISTORY_MAX_LEN = 100
 
-HEADER = 'TMenu v0.2\n'
+run-fzf() {
+    fzf --prompt "TMenu v0.3 > " -i
+}
 
-FOOTER = """
-q quit
-r refresh
-0 scratchpad
-1 start session
-2 start shell
-3 kill session
-""".strip()
+list-sessions() {
+    tmux list-sessions | awk -F ":" '{print $1}'
+}
 
+get-unnamed-session-name() {
+    echo "unamed-$(list-sessions | wc -l)"
+}
 
-def tmux_run(*args):
-    return subprocess.check_output(
-        [
-            'tmux',
-            '-f', TMUX_CONF_PATH,
-            *args,
-        ],
-    ).decode().splitlines()
+new-session() {
+    tmux new-session -c $HOME -s "$1" -d
+}
 
+attach-session() {
+    tmux attach-session
+}
 
-def tmux_list_sessions():
-    scratchpad_running = False
-    sessions = []
+get-custom-commands() {
+    echo "!scratchpad"
+    echo "!new-session"
+    echo "!quit"
+}
 
-    try:
-        for line in tmux_run('list-sessions'):
-            session = line.strip().split(':')[0]
+get-user-input() {
+    echo 0 > $TEMP_FILE  # scratchpad
+    get-custom-commands >> $TEMP_FILE
+    list-sessions >> $TEMP_FILE
 
-            if session == '0':  # reserved for scratchpad
-                scratchpad_running = True
+    cat $TEMP_FILE | sort | uniq | run-fzf
+}
 
-                continue
 
-            sessions.append(session)
+while true; do
+    USER_INPUT=$(get-user-input)
 
-    except subprocess.CalledProcessError:
-        # tmux returns 1 if no sessions are running
+    if [ "$USER_INPUT" == "" ]; then
+        continue
+    fi
 
-        return scratchpad_running, sessions
+    # quit
+    if [ "$USER_INPUT" == "!quit" ]; then
+        exit 0
+    fi
 
-    sessions = sorted(sessions)
+    # new session
+    if [ "$USER_INPUT" == "!new-session" ]; then
+        new-session "$(get-unnamed-session-name)"
 
-    # sort sessions after history file
-    if os.path.exists(HISTORY_PATH):
-        history = []
+        continue
+    fi
 
-        with open(HISTORY_PATH, 'r') as f:
-            history = [i.strip() for i in f.readlines()][::-1]
-            history = list(dict.fromkeys(history))
+    # expand !scratchpad to session name "0"
+    if [ "$USER_INPUT" == "!scratchpad" ]; then
+        USER_INPUT=0
+    fi
 
-        for line in history.copy():
-            if line not in sessions:
-                history.remove(line)
-
-        for session in sessions.copy():
-            if session in history:
-                sessions.remove(session)
-
-        sessions = history + sessions
-
-    return scratchpad_running, sessions
-
-
-def tmux_new_session(name):
-    tmux_run('new-session', '-c', os.environ['HOME'], '-s', name, '-d')
-
-
-def tmux_open_scratchpad():
-    scratchpad_running, sessions = tmux_list_sessions()
-
-    if not scratchpad_running:
-        tmux_new_session('0')
-
-    tmux_run('attach-session', '-t', '0')
-
-
-def tmux_kill_session(name):
-    tmux_run('kill-session', '-t', name)
-
-
-def tmux_generate_session_name():
-    scratchpad_running, sessions = tmux_list_sessions()
-
-    for i in range(1, 100):
-        session_name = f'unnamed-{len(sessions)+i}'
-
-        if session_name not in sessions:
-            return session_name
-
-    raise RuntimeError()
-
-
-def tmux_add_to_history(session_name):
-    # read history
-    history = []
-
-    for line in open(HISTORY_PATH, 'r'):
-        line = line.strip()
-
-        if line in history:
-            continue
-
-        history.append(line)
-
-    # rotate history
-    history = history[len(history)-(HISTORY_MAX_LEN-1):]
-
-    # add new history item
-    history.append(session_name)
-
-    # write history back
-    with open(HISTORY_PATH, 'w+') as f:
-        for item in history:
-            f.write(f'{item}\n')
-
-
-def shell_run():
-    subprocess.check_output([os.environ['SHELL']])
-
-
-# curses selection ############################################################
-class TMenu:
-    state = {
-        'exit': False,
-        'callback': None,
-    }
-
-    def __init__(self, screen):
-        self.screen = screen
-
-        # setup curses
-        curses.start_color()
-        curses.use_default_colors()
-        curses.curs_set(0)
-
-        curses.init_pair(1, curses.COLOR_WHITE, -1)
-
-        self.window = screen.subwin(0, 0)
-        self.window.keypad(1)
-
-        self.panel = panel.new_panel(self.window)
-        self.panel.hide()
-
-        panel.update_panels()
-
-        self.rows, self.cols = self.screen.getmaxyx()
-
-        # main loop
-        self.run()
-
-    def _paint(self):
-        self.window.clear()
-
-        self.scratchpad_running, self.sessions = tmux_list_sessions()
-
-        # header
-        self.window.addstr(0, 0, HEADER, curses.A_BOLD)
-
-        # footer
-        y_offset = len(HEADER.splitlines())
-        y_offset += len(self.sessions)
-        y_offset += 2
-
-        self.window.addstr(y_offset, 0, FOOTER)
-
-    def _get_selected_session(self):
-        return self.sessions[self.cursor_position]
-
-    def run(self):
-        self.panel.top()
-        self.panel.show()
-
-        self.cursor_position = 0
-
-        # sessions
-        self._paint()
-
-        while True:
-            self.window.refresh()
-            curses.doupdate()
-
-            # adjust cursor if needed
-            if self.cursor_position < 1:
-                self.cursor_position = 0
-
-            if self.cursor_position >= len(self.sessions):
-                self.cursor_position = len(self.sessions) - 1
-
-            # paint sessions and cursor
-            for index, session in enumerate(self.sessions):
-                if index == self.cursor_position:
-                    mode = curses.A_REVERSE
-
-                else:
-                    mode = curses.A_NORMAL
-
-                message = f"  {session}{' ' * (self.cols - (len(session) + 2))}\n"  # NOQA
-
-                self.window.addstr(index+2, 0, message, mode)
-
-            # wait for input
-            try:
-                key = self.window.getch()
-
-            except KeyboardInterrupt:
-                self.state['exit'] = True
-
-                break
-
-            # q (quit)
-            if key == ord('q'):
-                self.state['exit'] = True
-
-                break
-
-            # r (refresh)
-            elif key == ord('r'):
-                self._paint()
-                self.cursor_position = 0
-
-            # 0 (scratchpad)
-            elif key == ord('0'):
-                tmux_open_scratchpad()
-
-                break
-
-            # 1 (start session)
-            elif key == ord('1'):
-                new_session_name = tmux_generate_session_name()
-
-                tmux_new_session(new_session_name)
-                tmux_run('attach-session', '-t', new_session_name)
-
-                break
-
-            # 2 (start shell)
-            elif key == ord('2'):
-                self.state['callback'] = partial(shell_run)
-
-                break
-
-            # 3 (kill session)
-            elif key == ord('3'):
-                if not self.sessions:
-                    continue
-
-                tmux_kill_session(self._get_selected_session())
-                self._paint()
-
-            # ARROW_DOWN | t
-            elif key in [curses.KEY_DOWN, ord('t')]:
-                self.cursor_position += 1
-
-                if self.cursor_position >= len(self.sessions):
-                    self.cursor_position = 0
-
-            # ARROW_UP | n
-            elif key in [curses.KEY_UP, ord('n')]:
-                self.cursor_position -= 1
-
-                if self.cursor_position < 0:
-                    self.cursor_position = len(self.sessions) - 1
-
-            # ENTER
-            elif key == ord('\n'):
-                if not self.sessions:
-                    continue
-
-                session_name = self._get_selected_session()
-
-                tmux_run('attach-session', '-t', session_name)
-                tmux_add_to_history(session_name)
-
-                break
-
-
-if __name__ == '__main__':
-    # create tmenu history if not present
-    if not os.path.exists(HISTORY_PATH):
-        with open(HISTORY_PATH, 'w+') as f:
-            f.close()
-
-    # main loop
-    while True:
-
-        # clear screen
-        os.system('clear')
-
-        # run tui
-        curses.wrapper(TMenu)
-
-        # exit
-        if TMenu.state['exit']:
-            exit()
-
-        # callback
-        elif TMenu.state['callback'] is not None:
-            TMenu.state['callback']()
-            TMenu.state['callback'] = None
+     tmux attach-session -t "$USER_INPUT"
+done
