@@ -60,11 +60,11 @@ if [ $UID -gt 0 ]; then
 fi
 
 # prompt command ##############################################################
-prompt_command() {                  
-    export LAST_STATUS=$?           
-    export PS1=$(bash-prompt)       
-}                                   
-                                    
+prompt_command() {
+    export LAST_STATUS=$?
+    export PS1=$(bash-prompt)
+}
+
 export PROMPT_COMMAND=prompt_command
 
 # functions ###################################################################
