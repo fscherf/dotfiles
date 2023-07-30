@@ -24,7 +24,6 @@ attach-session() {
 }
 
 get-custom-commands() {
-    echo "!scratchpad"
     echo "!new-session"
     echo "!quit"
 }
@@ -55,11 +54,6 @@ while true; do
         USER_INPUT="$(get-unnamed-session-name)"
 
         new-session "$USER_INPUT"
-    fi
-
-    # expand !scratchpad to session name "0"
-    if [ "$USER_INPUT" == "!scratchpad" ]; then
-        USER_INPUT=0
     fi
 
      tmux attach-session -t "$USER_INPUT"
