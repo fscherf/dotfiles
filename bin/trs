@@ -1,0 +1,19 @@
+#!/bin/bash
+
+BASENAME=$(basename $PWD)
+PARENT=$(dirname $PWD)
+PARENT_BASENAME=$(basename $PARENT)
+
+
+slugify() {
+    echo "$1" | sed -r "s/\./_/g"
+}
+
+
+if [ "$PARENT" == "$HOME" ]; then
+    SESSION_NAME=$(slugify $BASENAME)
+else
+    SESSION_NAME="$(slugify $PARENT_BASENAME)__$(slugify $BASENAME)"
+fi
+
+tmux rename-session "$SESSION_NAME"
