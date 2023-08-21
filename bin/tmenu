@@ -3,12 +3,16 @@
 TEMP_FILE=$(mktemp)
 
 
+_tmux() {
+    tmux -f ~/.dotfiles/tmenu-tmux.conf $@
+}
+
 run-fzf() {
     fzf --prompt "TMenu v0.3 > " -i
 }
 
 list-sessions() {
-    tmux list-sessions | awk -F ":" '{print $1}'
+    _tmux list-sessions | awk -F ":" '{print $1}'
 }
 
 get-unnamed-session-name() {
@@ -16,11 +20,11 @@ get-unnamed-session-name() {
 }
 
 new-session() {
-    tmux new-session -c $HOME -s "$1" -d
+    _tmux new-session -c $HOME -s "$1" -d
 }
 
 attach-session() {
-    tmux attach-session
+    _tmux attach-session
 }
 
 get-custom-commands() {
@@ -56,5 +60,5 @@ while true; do
         new-session "$USER_INPUT"
     fi
 
-     tmux attach-session -t "$USER_INPUT"
+     _tmux attach-session -t "$USER_INPUT"
 done
