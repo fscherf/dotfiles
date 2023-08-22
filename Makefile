@@ -44,6 +44,7 @@ install:
 	cp .profile ~/.profile
 	cp .bashrc ~/.bashrc
 	cp .gitconfig ~/.gitconfig
+	cp .gitignore.global ~/.gitignore
 	cp .tmux.conf ~/.tmux.conf
 	cp .tigrc ~/.tigrc
 	cp .vimrc ~/.vimrc
