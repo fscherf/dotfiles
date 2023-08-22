@@ -166,6 +166,7 @@ Plugin 'vim-syntastic/syntastic'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'junegunn/fzf'
 Plugin 'cespare/vim-toml'
+Plugin 'preservim/tagbar'
 
 call vundle#end()
 filetype plugin indent on
@@ -222,6 +223,13 @@ map <silent>f :FZF<CR>
 
 let $FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git || git ls-files'
 let g:fzf_action = {'enter': 'tab split'}
+
+" tagbar
+nmap <F8> :TagbarToggle fj<CR>
+
+let g:tagbar_autoclose = 1
+let g:tagbar_map_togglepause = ''
+let g:tagbar_map_togglesort = ''
 
 " local vimrc -----------------------------------------------------------------
 source ~/.vimrc.local

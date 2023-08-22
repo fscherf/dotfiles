@@ -13,6 +13,7 @@ all: install
 setup-debian:
 	sudo apt install \
 		vim vim-nox tmux git tig make rsync fd-find htop tree fzf \
+		universal-ctags \
 		python3 python3-venv
 
 setup-debian-desktop:
