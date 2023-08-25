@@ -1,0 +1,370 @@
+#!/usr/bin/env python3
+
+import subprocess
+import json
+import sys
+import os
+
+STATE_FILE_PATH = os.path.expanduser('~/.launch-control.json')
+
+IGNORED_WINDOW_CLASSES = [
+    'nemo-desktop.Nemo-desktop',  # cinnamon desktop
+]
+
+COMMANDS = {}
+
+
+# low level helper ############################################################
+def run(command):
+    return subprocess.check_output(
+        command,
+        stderr=subprocess.STDOUT,
+        shell=True,
+        env=os.environ,
+    ).decode().strip().splitlines()
+
+
+def command(func):
+    name = '-'.join(filter(any, func.__name__.split('_')))
+
+    COMMANDS[name] = func
+
+    return func
+
+
+# window manager helper #######################################################
+# display
+def get_display_size():
+    x, y = run('xdotool getdisplaygeometry')[0].split(' ')
+
+    return int(x), int(y)
+
+
+# desktops
+def get_active_desktop_id():
+    return run('xdotool get_desktop')[0]
+
+
+def activate_desktop(desktop_id):
+    return run(f'xdotool set_desktop {desktop_id}')
+
+
+# windows
+def get_windows_ids(desktop_id=None):
+    lines = run('wmctrl -l -x')
+    window_ids = []
+
+    for line in lines:
+        window_id, line = line.split(' ', 1)
+        window_desktop_id, line = line.strip().split(' ', 1)
+        window_class, line = line.strip().split(' ', 1)
+
+        if desktop_id and (window_desktop_id != desktop_id):
+            continue
+
+        if window_class in IGNORED_WINDOW_CLASSES:
+            continue
+
+        window_ids.append(int(window_id, base=16))
+
+    return sorted(window_ids)
+
+
+def get_active_window_id():
+    return int(run('xdotool getactivewindow')[0])
+
+
+def activate_window(window_id):
+    return run(f'xdotool windowactivate {window_id}')
+
+
+def move_window(window_id='', x='', y='', width='', height=''):
+    command = 'xdotool '
+
+    if not window_id:
+        window_id = 'getactivewindow '
+
+    command += window_id
+
+    if width != '' or height != '':
+        command += f'windowsize {width} {height} '
+
+    if x != '' or y != '':
+        command += f'windowmove {x} {y} '
+
+    return run(command)
+
+
+# user interaction
+def prompt(choices):
+    choices_string = '\n'.join(choices)
+
+    try:
+        return run(f'echo "{choices_string}" | dmenu')
+
+    except subprocess.CalledProcessError:
+        return []
+
+
+# launch control helper #######################################################
+def write_empty_state_file():
+    with open(STATE_FILE_PATH, 'w+') as handle:
+        handle.write('{}')
+
+
+def write_state_file(state):
+    with open(STATE_FILE_PATH, 'w+') as handle:
+        handle.write(json.dumps(state))
+
+
+def get_state():
+    desktop_id = get_active_desktop_id()
+    window_ids = get_windows_ids()
+    state_changed = False
+
+    # create empty state file if not present
+    if not os.path.exists(STATE_FILE_PATH):
+        write_empty_state_file()
+
+    # get state
+    try:
+        state = json.loads(open(STATE_FILE_PATH, 'r').read())
+
+    except Exception:
+
+        # if anything unexpected happens we just override the previous state
+        write_empty_state_file()
+        state = {}
+
+    # pinned windows in state
+    if 'pinned-windows' not in state:
+        state['pinned-windows'] = {}
+
+        state_changed = True
+
+    if desktop_id not in state['pinned-windows']:
+        state['pinned-windows'][desktop_id] = []
+
+        state_changed = True
+
+    # clenup old pinned windows
+    for desktop_id in state['pinned-windows'].keys():
+        for window_id in state['pinned-windows'][desktop_id].copy():
+            if window_id not in window_ids:
+                state['pinned-windows'][desktop_id].remove(window_id)
+
+                state_changed = True
+
+    # write state
+    if state_changed:
+        write_state_file(state)
+
+    return state
+
+
+# commands ####################################################################
+@command
+def _run():
+    run('dmenu_run')
+
+
+# tiling
+TILING_AREA = 0.5
+TILING_SPACING = 0.1
+
+
+@command
+def tile_left():
+    display_width, display_height = get_display_size()
+
+    x = (display_width - (display_width * TILING_AREA)) / 2
+
+    width = (
+        (display_width * TILING_AREA) -
+        (display_width * TILING_AREA * TILING_SPACING)
+    )
+
+    move_window(x=int(x), y=0, width=int(width), height=int(display_height))
+
+
+@command
+def tile_right():
+    display_width, display_height = get_display_size()
+
+    x = (display_width - (display_width * TILING_AREA)) / 2
+    x += int(display_width * TILING_AREA * TILING_SPACING)
+
+    width = (
+        (display_width * TILING_AREA) -
+        (display_width * TILING_AREA * TILING_SPACING)
+    )
+
+    move_window(x=int(x), y=0, width=int(width), height=int(display_height))
+
+
+@command
+def tile_top_left():
+    display_width, display_height = get_display_size()
+
+    move_window(
+        x=0,
+        y=0,
+        width=int(display_width*0.5),
+        height=int(display_height*0.75),
+    )
+
+
+@command
+def tile_top_right():
+    display_width, display_height = get_display_size()
+
+    move_window(
+        x=int(display_width*0.5),
+        y=0,
+        width=int(display_width*0.5),
+        height=int(display_height*0.75),
+    )
+
+
+@command
+def tile_left_full_height():
+    display_width, display_height = get_display_size()
+
+    move_window(
+        x=0,
+        y=0,
+        width=int(display_width*0.9),
+        height=display_height,
+    )
+
+
+@command
+def tile_right_full_height():
+    display_width, display_height = get_display_size()
+
+    move_window(
+        x=int(display_width*0.15),
+        y=0,
+        width=int(display_width*0.85),
+        height=display_height,
+    )
+
+
+# pinning
+@command
+def pin():
+    desktop_id = get_active_desktop_id()
+    window_id = get_active_window_id()
+    state = get_state()
+
+    if window_id not in state['pinned-windows'][desktop_id]:
+        state['pinned-windows'][desktop_id].append(window_id)
+
+        write_state_file(state)
+
+
+@command
+def unpin():
+    desktop_id = get_active_desktop_id()
+    window_id = get_active_window_id()
+    state = get_state()
+
+    if window_id in state['pinned-windows'][desktop_id]:
+        state['pinned-windows'][desktop_id].remove(window_id)
+
+        write_state_file(state)
+
+
+@command
+def unpin_all():
+    desktop_id = get_active_desktop_id()
+    state = get_state()
+
+    state['pinned-windows'][desktop_id].clear()
+
+    write_state_file(state)
+
+
+# window / desktop switching
+@command
+def next_desktop():
+    active_desktop = get_active_desktop_id()
+
+    if active_desktop == '0':
+        activate_desktop('1')
+
+    elif active_desktop == '1':
+        activate_desktop('0')
+
+    else:
+        activate_desktop('0')
+
+
+@command
+def next_window():
+    desktop_id = get_active_desktop_id()
+    window_ids = get_windows_ids(desktop_id=desktop_id)
+    active_window_id = get_active_window_id()
+    active_window_index = window_ids.index(active_window_id)
+
+    index = active_window_index + 1
+
+    if index >= len(window_ids):
+        index = 0
+
+    activate_window(window_ids[index])
+
+
+@command
+def next_pinned_window():
+    desktop_id = get_active_desktop_id()
+    state = get_state()
+    pinned_window_ids = state['pinned-windows'][desktop_id]
+
+    if not pinned_window_ids or len(pinned_window_ids) < 2:
+        return next_window()
+
+    active_window_id = get_active_window_id()
+
+    if active_window_id in pinned_window_ids:
+        index = pinned_window_ids.index(active_window_id) + 1
+
+        if index >= len(pinned_window_ids):
+            index = 0
+
+    else:
+        index = 0
+
+    activate_window(pinned_window_ids[index])
+
+
+# main ########################################################################
+if __name__ == '__main__':
+
+    # prompt
+    if len(sys.argv) < 2:
+        lines = prompt(COMMANDS.keys())
+
+        if not lines:
+            sys.exit(0)
+
+        command_name = lines[0]
+
+    # command line argument
+    else:
+
+        # help string
+        if sys.argv[1] in ('-h', '--help'):
+            print(f'launch-control [{",".join(COMMANDS.keys())}]')
+
+            sys.exit(0)
+
+        # sub command
+        command_name = sys.argv[1]
+
+    # unknown command
+    if command_name not in COMMANDS:
+        sys.exit(f'unknown command "{command_name}"')
+
+    # run command
+    COMMANDS[command_name]()
