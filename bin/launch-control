@@ -250,6 +250,30 @@ def tile_right_full_height():
     )
 
 
+@command
+def snap_left():
+    display_width, display_height = get_display_size()
+
+    move_window(
+        x=0,
+        y=0,
+        width=int(display_width*0.5),
+        height=display_height,
+    )
+
+
+@command
+def snap_right():
+    display_width, display_height = get_display_size()
+
+    move_window(
+        x=int(display_width*0.5),
+        y=0,
+        width=int(display_width*0.5),
+        height=display_height,
+    )
+
+
 # pinning
 @command
 def pin():
