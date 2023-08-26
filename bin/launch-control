@@ -174,7 +174,7 @@ TILING_SPACING = 0.1
 
 
 @command
-def tile_left():
+def tile_main_left():
     display_width, display_height = get_display_size()
 
     x = (display_width - (display_width * TILING_AREA)) / 2
@@ -188,7 +188,7 @@ def tile_left():
 
 
 @command
-def tile_right():
+def tile_main_right():
     display_width, display_height = get_display_size()
 
     x = (display_width - (display_width * TILING_AREA)) / 2
@@ -227,7 +227,7 @@ def tile_top_right():
 
 
 @command
-def tile_left_full_height():
+def tile_left_laptop():
     display_width, display_height = get_display_size()
 
     move_window(
@@ -239,7 +239,7 @@ def tile_left_full_height():
 
 
 @command
-def tile_right_full_height():
+def tile_right_laptop():
     display_width, display_height = get_display_size()
 
     move_window(
@@ -251,7 +251,26 @@ def tile_right_full_height():
 
 
 @command
-def snap_left():
+def tile_left():
+    display_width, display_height = get_display_size()
+
+    width = (display_width - (display_width * TILING_AREA)) / 2
+
+    move_window(x=0, y=0, width=int(width), height=int(display_height))
+
+
+@command
+def tile_right():
+    display_width, display_height = get_display_size()
+
+    x = (display_width - (display_width * TILING_AREA)) * 1.5
+    width = (display_width - (display_width * TILING_AREA)) / 2
+
+    move_window(x=int(x), y=0, width=int(width), height=int(display_height))
+
+
+@command
+def tile_left_50():
     display_width, display_height = get_display_size()
 
     move_window(
@@ -263,7 +282,7 @@ def snap_left():
 
 
 @command
-def snap_right():
+def tile_right_50():
     display_width, display_height = get_display_size()
 
     move_window(
@@ -272,6 +291,16 @@ def snap_right():
         width=int(display_width*0.5),
         height=display_height,
     )
+
+
+@command
+def tile_movie():
+    display_width, display_height = get_display_size()
+
+    width = (display_width - (display_width * TILING_AREA)) / 2
+    height = display_height * 0.5
+
+    move_window(x=0, y=0, width=int(width), height=int(height))
 
 
 # pinning
