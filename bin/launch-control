@@ -87,10 +87,10 @@ def move_window(window_id='', x='', y='', width='', height=''):
     command += window_id
 
     if width != '' or height != '':
-        command += f'windowsize {width} {height} '
+        command += f'windowsize {int(width)} {int(height)} '
 
     if x != '' or y != '':
-        command += f'windowmove {x} {y} '
+        command += f'windowmove {int(x)} {int(y)} '
 
     return run(command)
 
@@ -184,7 +184,7 @@ def tile_main_left():
         (display_width * TILING_AREA * TILING_SPACING)
     )
 
-    move_window(x=int(x), y=0, width=int(width), height=int(display_height))
+    move_window(x=x, y=0, width=width, height=display_height)
 
 
 @command
@@ -192,14 +192,14 @@ def tile_main_right():
     display_width, display_height = get_display_size()
 
     x = (display_width - (display_width * TILING_AREA)) / 2
-    x += int(display_width * TILING_AREA * TILING_SPACING)
+    x += display_width * TILING_AREA * TILING_SPACING
 
     width = (
         (display_width * TILING_AREA) -
         (display_width * TILING_AREA * TILING_SPACING)
     )
 
-    move_window(x=int(x), y=0, width=int(width), height=int(display_height))
+    move_window(x=x, y=0, width=width, height=display_height)
 
 
 @command
@@ -208,7 +208,7 @@ def tile_left():
 
     width = (display_width - (display_width * TILING_AREA)) / 2
 
-    move_window(x=0, y=0, width=int(width), height=int(display_height))
+    move_window(x=0, y=0, width=width, height=display_height)
 
 
 @command
@@ -218,7 +218,7 @@ def tile_right():
     x = (display_width - (display_width * TILING_AREA)) * 1.5
     width = (display_width - (display_width * TILING_AREA)) / 2
 
-    move_window(x=int(x), y=0, width=int(width), height=int(display_height))
+    move_window(x=x, y=0, width=width, height=display_height)
 
 
 @command
@@ -228,8 +228,8 @@ def tile_top_left():
     move_window(
         x=0,
         y=0,
-        width=int(display_width*0.5),
-        height=int(display_height*0.75),
+        width=display_width*0.5,
+        height=display_height*0.75,
     )
 
 
@@ -238,10 +238,10 @@ def tile_top_right():
     display_width, display_height = get_display_size()
 
     move_window(
-        x=int(display_width*0.5),
+        x=display_width*0.5,
         y=0,
-        width=int(display_width*0.5),
-        height=int(display_height*0.75),
+        width=display_width*0.5,
+        height=display_height*0.75,
     )
 
 
@@ -252,7 +252,7 @@ def tile_top_left_corner():
     width = (display_width - (display_width * TILING_AREA)) / 2
     height = display_height * 0.5
 
-    move_window(x=0, y=0, width=int(width), height=int(height))
+    move_window(x=0, y=0, width=width, height=height)
 
 
 @command
@@ -265,8 +265,8 @@ def tile_top_right_corner():
     move_window(
         x=display_width-width,
         y=0,
-        width=int(width),
-        height=int(height),
+        width=width,
+        height=height,
     )
 
 
@@ -278,7 +278,7 @@ def tile_left_laptop():
     move_window(
         x=0,
         y=0,
-        width=int(display_width*0.9),
+        width=display_width*0.9,
         height=display_height,
     )
 
@@ -288,9 +288,9 @@ def tile_right_laptop():
     display_width, display_height = get_display_size()
 
     move_window(
-        x=int(display_width*0.15),
+        x=display_width*0.15,
         y=0,
-        width=int(display_width*0.85),
+        width=display_width*0.85,
         height=display_height,
     )
 
@@ -303,7 +303,7 @@ def tile_left_50():
     move_window(
         x=0,
         y=0,
-        width=int(display_width*0.5),
+        width=display_width*0.5,
         height=display_height,
     )
 
@@ -313,9 +313,9 @@ def tile_right_50():
     display_width, display_height = get_display_size()
 
     move_window(
-        x=int(display_width*0.5),
+        x=display_width*0.5,
         y=0,
-        width=int(display_width*0.5),
+        width=display_width*0.5,
         height=display_height,
     )
 
