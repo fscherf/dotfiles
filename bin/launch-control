@@ -168,7 +168,7 @@ def _run():
     run('dmenu_run')
 
 
-# tiling
+# tiling / main area ----------------------------------------------------------
 TILING_AREA = 0.5
 TILING_SPACING = 0.1
 
@@ -203,6 +203,25 @@ def tile_main_right():
 
 
 @command
+def tile_left():
+    display_width, display_height = get_display_size()
+
+    width = (display_width - (display_width * TILING_AREA)) / 2
+
+    move_window(x=0, y=0, width=int(width), height=int(display_height))
+
+
+@command
+def tile_right():
+    display_width, display_height = get_display_size()
+
+    x = (display_width - (display_width * TILING_AREA)) * 1.5
+    width = (display_width - (display_width * TILING_AREA)) / 2
+
+    move_window(x=int(x), y=0, width=int(width), height=int(display_height))
+
+
+@command
 def tile_top_left():
     display_width, display_height = get_display_size()
 
@@ -227,6 +246,32 @@ def tile_top_right():
 
 
 @command
+def tile_top_left_corner():
+    display_width, display_height = get_display_size()
+
+    width = (display_width - (display_width * TILING_AREA)) / 2
+    height = display_height * 0.5
+
+    move_window(x=0, y=0, width=int(width), height=int(height))
+
+
+@command
+def tile_top_right_corner():
+    display_width, display_height = get_display_size()
+
+    width = (display_width - (display_width * TILING_AREA)) / 2
+    height = display_height * 0.5
+
+    move_window(
+        x=display_width-width,
+        y=0,
+        width=int(width),
+        height=int(height),
+    )
+
+
+# tiling / laptop -------------------------------------------------------------
+@command
 def tile_left_laptop():
     display_width, display_height = get_display_size()
 
@@ -250,25 +295,7 @@ def tile_right_laptop():
     )
 
 
-@command
-def tile_left():
-    display_width, display_height = get_display_size()
-
-    width = (display_width - (display_width * TILING_AREA)) / 2
-
-    move_window(x=0, y=0, width=int(width), height=int(display_height))
-
-
-@command
-def tile_right():
-    display_width, display_height = get_display_size()
-
-    x = (display_width - (display_width * TILING_AREA)) * 1.5
-    width = (display_width - (display_width * TILING_AREA)) / 2
-
-    move_window(x=int(x), y=0, width=int(width), height=int(display_height))
-
-
+# tiling / misc ---------------------------------------------------------------
 @command
 def tile_left_50():
     display_width, display_height = get_display_size()
@@ -293,17 +320,7 @@ def tile_right_50():
     )
 
 
-@command
-def tile_movie():
-    display_width, display_height = get_display_size()
-
-    width = (display_width - (display_width * TILING_AREA)) / 2
-    height = display_height * 0.5
-
-    move_window(x=0, y=0, width=int(width), height=int(height))
-
-
-# pinning
+# pinning ---------------------------------------------------------------------
 @command
 def pin():
     desktop_id = get_active_desktop_id()
@@ -338,7 +355,7 @@ def unpin_all():
     write_state_file(state)
 
 
-# window / desktop switching
+# window / desktop switching --------------------------------------------------
 @command
 def next_desktop():
     active_desktop = get_active_desktop_id()
