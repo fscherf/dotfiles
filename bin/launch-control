@@ -95,6 +95,10 @@ def move_window(window_id='', x='', y='', width='', height=''):
     return run(command)
 
 
+def move_window_to_workspace(window_id, desktop_id):
+    return run(f'xdotool set_desktop_for_window {window_id} {desktop_id}')
+
+
 # user interaction
 def prompt(choices):
     choices_string = '\n'.join(choices)
@@ -406,6 +410,47 @@ def next_pinned_window():
         index = 0
 
     activate_window(pinned_window_ids[index])
+
+
+# window move -----------------------------------------------------------------
+@command
+def move_window_to_workspace_1():
+    active_window_id = get_active_window_id()
+
+    move_window_to_workspace(
+        window_id=active_window_id,
+        desktop_id=0,
+    )
+
+
+@command
+def move_window_to_workspace_2():
+    active_window_id = get_active_window_id()
+
+    move_window_to_workspace(
+        window_id=active_window_id,
+        desktop_id=1,
+    )
+
+
+@command
+def move_window_to_workspace_3():
+    active_window_id = get_active_window_id()
+
+    move_window_to_workspace(
+        window_id=active_window_id,
+        desktop_id=2,
+    )
+
+
+@command
+def move_window_to_workspace_4():
+    active_window_id = get_active_window_id()
+
+    move_window_to_workspace(
+        window_id=active_window_id,
+        desktop_id=3,
+    )
 
 
 # main ########################################################################
