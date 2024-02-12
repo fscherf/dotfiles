@@ -2,9 +2,10 @@
 
 set -o pipefail
 
-SOURCE="/home/fscherf/data/*"
-DESTINATION="/srv/storage/seagate-red-8tb"
-LOG_FILE="$DESTINATION/backup.log"
+SOURCE1=~/srv/storage/wd-white-8tb/*
+SOURCE2=~/srv/services
+DESTINATION=~/srv/storage/seagate-red-8tb
+LOG_FILE=$DESTINATION/backup.log
 
 
 function main() {
@@ -15,7 +16,7 @@ function main() {
         set -x
 
         rsync --recursive --delete --update --verbose \
-            $SOURCE $DESTINATION
+            $SOURCE1 $SOURCE2 $DESTINATION
     }
 }
 
