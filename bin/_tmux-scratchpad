@@ -1,0 +1,27 @@
+#!/bin/bash
+
+CURRENT_SESSION="$1"
+
+
+attach-scratchpad() {
+    # start scratchpad if none is present
+    tmux list-sessions | awk -F ":" '{print $1}' | grep "^0$" -q || {
+        tmux new-session -c "$HOME" -s "0" -d
+    }
+
+    # attach scratchpad
+    tmux switch-client -t 0
+}
+
+
+# coming from scratchpad
+if [ "$CURRENT_SESSION" == "0" ]; then
+
+    # try to attach previous session
+    # re-attach scratchpad on error
+    tmux switch-client -l || attach-scratchpad
+
+# coming from a user defined session
+else
+    attach-scratchpad
+fi
