@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+set -x
+
+_mount() {
+    remote_dir=$1
+    local_dir=$2
+
+    if [ ! -d "$local_dir" ]; then
+        mkdir -p $local_dir
+    fi
+
+    if ! mountpoint -q "$local_dir"; then
+        sshfs ripley:$remote_dir $local_dir
+    fi
+}
+
+_mount data/ ~/mnt/ripley-data
+_mount devel/ ~/mnt/ripley-devel
