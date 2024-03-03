@@ -40,12 +40,25 @@ get-user-input() {
     cat $TEMP_FILE | sort | uniq | run-fzf
 }
 
+scratchpad-is-running() {
+    list-sessions | grep "^0$" -q
+}
+
+create-scratchpad() {
+    new-session "0"
+}
+
 
 while true; do
     USER_INPUT=$(get-user-input)
 
     if [ "$USER_INPUT" == "" ]; then
         continue
+    fi
+
+    # scratchpad
+    if [ "$USER_INPUT" == "0" ]; then
+        scratchpad-is-running || create-scratchpad
     fi
 
     # quit
