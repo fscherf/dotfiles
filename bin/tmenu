@@ -2,35 +2,49 @@
 
 TEMP_FILE=$(mktemp)
 
-
+# tmux
 _tmux() {
     tmux -f ~/.dotfiles/tmenu-tmux.conf $@
 }
 
-run-fzf() {
-    fzf --prompt "TMenu v0.3 > " -i
-}
 
 list-sessions() {
     _tmux list-sessions | awk -F ":" '{print $1}'
 }
 
-get-unnamed-session-name() {
-    echo "unamed-$(list-sessions | wc -l)"
-}
 
 new-session() {
     _tmux new-session -c $HOME -s "$1" -d
 }
 
-attach-session() {
-    _tmux attach-session
+
+get-unnamed-session-name() {
+    echo "unamed-$(list-sessions | wc -l)"
 }
+
+
+# tmux: scratchpad
+scratchpad-is-running() {
+    list-sessions | grep "^0$" -q
+}
+
+
+create-scratchpad() {
+    new-session "0"
+}
+
+
+# user input
+run-fzf() {
+    fzf --prompt "TMenu v0.3 > " -i
+}
+
 
 get-custom-commands() {
     echo "!new-session"
     echo "!quit"
 }
+
 
 get-user-input() {
     echo 0 > $TEMP_FILE  # scratchpad
@@ -40,15 +54,8 @@ get-user-input() {
     cat $TEMP_FILE | sort | uniq | run-fzf
 }
 
-scratchpad-is-running() {
-    list-sessions | grep "^0$" -q
-}
 
-create-scratchpad() {
-    new-session "0"
-}
-
-
+# main loop
 while true; do
     USER_INPUT=$(get-user-input)
 
