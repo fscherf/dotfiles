@@ -15,5 +15,6 @@ _mount() {
     fi
 }
 
+_mount srv/storage/ ~/mnt/ripley-storage
 _mount data/ ~/mnt/ripley-data
 _mount devel/ ~/mnt/ripley-devel
