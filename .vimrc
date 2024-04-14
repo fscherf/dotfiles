@@ -152,6 +152,7 @@ Plugin 'davidhalter/jedi-vim'
 Plugin 'junegunn/fzf'
 Plugin 'cespare/vim-toml'
 Plugin 'preservim/tagbar'
+Plugin 'preservim/vim-markdown'
 
 call vundle#end()
 filetype plugin indent on
