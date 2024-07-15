@@ -80,6 +80,11 @@ install-docker:
 	sudo apt install docker docker.io docker-compose
 	sudo adduser $$USER docker
 
+# vim #########################################################################
+install-vim9:
+	sudo add-apt-repository ppa:jonathonf/vim
+	sudo apt update
+
 # cinnamon ####################################################################
 dconf-dump:
 	dconf dump / > dconf.dump
