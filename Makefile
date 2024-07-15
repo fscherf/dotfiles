@@ -4,8 +4,6 @@ FONT_NAME=SourceCodePro
 FONT_URL=https://github.com/adobe-fonts/source-code-pro/archive/1.017R.tar.gz
 FONT_DIRECTORY=/usr/share/fonts/truetype/$(FONT_NAME)
 
-.PHONY: cockpit
-
 
 all: install
 
@@ -64,10 +62,6 @@ root-install:
 	cp .bashrc ~/.bashrc
 	cp .vimrc.minimal ~/.vimrc
 	cp .tmux.conf ~/.tmux.conf
-
-# cockpit #####################################################################
-cockpit:
-	$(MAKE) -C cockpit server
 
 # development envs ############################################################
 install-pyenv:
