@@ -86,3 +86,9 @@ install-docker:
 	sudo apt install docker docker.io docker-compose
 	sudo adduser $$USER docker
 
+# cinnamon ####################################################################
+dconf-dump:
+	dconf dump / > dconf.dump
+
+dconf-load:
+	dconf load / < dconf.dump
