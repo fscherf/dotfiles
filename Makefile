@@ -18,9 +18,9 @@ setup-debian:
 
 setup-debian-desktop:
 	sudo apt install \
-		terminator ssh-askpass \
-		wmctrl xdotool xclip \
-		mplayer v4l-utils feh \
+		terminator ssh-askpass virt-manager \
+		wmctrl xdotool xclip suckless-tools \
+		mplayer v4l-utils feh vlc \
 		flameshot
 
 # font
