@@ -1,0 +1,71 @@
+#!/bin/bash
+
+COLOR_NORMAL="colour244"
+COLOR_LOW="green"
+COLOR_WARNING="yellow"
+COLOR_HIGH="red"
+
+CPU_USAGE_WARNING=30
+CPU_USAGE_HIGH=80
+CPU_TEMPERATURE_WARNING=80
+CPU_TEMPERATURE_HIGH=90
+
+RAM_USAGE_WARNING=30
+RAM_USAGE_HIGH=80
+
+# cpu #########################################################################
+get-cpu-count() {
+    nproc --all
+}
+
+get-cpu-load() {
+    ps -aux | awk '{print $3}' | tail -n+2 | awk '{s+=$1} END {print s}'
+}
+
+get-cpu-usage() {
+    echo "$(get-cpu-load) $(get-cpu-count)" | awk -v format="%3.1f" '{printf format, $1/$2}'
+}
+
+get-cpu-temperature() {
+    sensors | sed -e 's/^Tccd/Core /' | awk -v format="%2.0f" '/^Core [0-9]+/ {gsub("[^0-9.]", "", $3); sum+=$3; n+=1} END {printf(format, sum/n)}'
+}
+
+get-ram-usage() {
+    free | awk -v format="%3.1f" '$1 ~ /Mem/ {printf(format, 100*$3/$2)}'
+}
+
+# tmux ########################################################################
+tmux-label() {
+    echo -n "#[fg=$COLOR_NORMAL,bold]"
+}
+
+tmux-separator() {
+    echo -n "#[fg=$COLOR_NORMAL,nobold]|"
+}
+
+tmux-color() {
+    warning=$1
+    high=$2
+
+    read -r value
+
+    if (( $(echo "$value >= $high" | bc -l) )); then
+        color=$COLOR_HIGH
+        style="bold"
+    elif (( $(echo "$value >= $warning" | bc -l) )); then
+        color=$COLOR_WARNING
+        style="bold"
+    else
+        color=$COLOR_LOW
+        style="nobold"
+    fi
+
+    echo -n "#[fg=$color,$style]$value"
+}
+
+# main ########################################################################
+CPU_USAGE="$(get-cpu-usage | tmux-color $CPU_USAGE_WARNING $CPU_TEMPERATURE_HIGH)%"
+CPU_TEMPERATURE="$(get-cpu-temperature | tmux-color $CPU_TEMPERATURE_WARNING $CPU_TEMPERATURE_HIGH)°"
+RAM_USAGE="$(get-ram-usage | tmux-color $RAM_USAGE_WARNING $RAM_TEMPERATURE_HIGH)%"
+
+echo -n "$(tmux-label)CPU: $CPU_USAGE $CPU_TEMPERATURE $(tmux-separator) $(tmux-label)RAM: $RAM_USAGE $(tmux-separator) $(tmux-label)$(whoami)@$(cat /etc/hostname)"
