@@ -4,7 +4,9 @@ color cursor 232 154 bold
 
 bind main F !git commit --fixup %(commit)
 bind main C !git cherry-pick %(commit)
-bind main M !git rebase -i --autosquash %(commit)
+
+bind main m !git rebase -i --autosquash %(commit)
+bind main M !tig-rebase %(commit) %(commit)^1
 
 bind main t move-down
 bind main n move-up

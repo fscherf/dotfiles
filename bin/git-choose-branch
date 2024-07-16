@@ -1,0 +1,7 @@
+#!/bin/sh
+
+git branch \
+    -a --format='%(refname:short)' \
+| fzf \
+    --preview='git log -10 --pretty=oneline --color --decorate {}' \
+    --preview-window='up,10'
