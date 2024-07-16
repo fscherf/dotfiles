@@ -123,6 +123,7 @@ filetype plugin indent on
 
 autocmd FileType rst,python,sh,javascript,css,scss,yaml,typescript,markdown setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType *html*                                                     setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType yaml,yml,json,typescript,css                               setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType gitcommit                                                  setlocal paste spell
 autocmd FileType gitrebase                                                  setlocal spell
 
