@@ -15,6 +15,7 @@ set colorcolumn=80
 set cursorline
 set mouse=a
 set clipboard=unnamedplus
+set laststatus=2
 
 " theme -----------------------------------------------------------------------
 set background=dark
@@ -49,6 +50,9 @@ hi PmenuThumb ctermbg=black ctermfg=None
 " trailing whitespace
 highlight WhitespaceEOL ctermbg=red guibg=red
 call matchadd('WhitespaceEOL', '\s\+$')
+
+" statusline
+hi StatusLine ctermfg=darkgrey ctermbg=none
 
 " NERDTree
 hi clear VertSplit
