@@ -4,3 +4,8 @@ set -x
 xset r rate 190 90
 webcam setup
 echo 0 | sudo tee /sys/class/leds/platform::mute/brightness
+
+# disable wake on USB
+for path in $(ls -1 /sys/bus/usb/devices/*/power/wakeup | xargs grep -l enabled); do
+    echo disabled | sudo tee $path
+done
