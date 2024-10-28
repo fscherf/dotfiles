@@ -18,3 +18,4 @@ _mount() {
 _mount srv/storage/ ~/mnt/ripley-storage
 _mount data/ ~/mnt/ripley-data
 _mount devel/ ~/mnt/ripley-devel
+_mount media/ ~/mnt/ripley-media
