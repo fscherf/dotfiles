@@ -74,6 +74,16 @@ hi GitGutterChange ctermfg=blue
 hi GitGutterDelete ctermfg=red
 hi GitGutterChangeDelete ctermfg=red
 
+" light mode
+" set background=light
+" hi SignColumn ctermbg=none
+" hi StatusLine ctermfg=black ctermbg=none
+" hi ColorColumn cterm=NONE ctermbg=lightgrey
+" hi TabLine ctermfg=grey ctermbg=none
+" hi TabLineSel ctermfg=black ctermbg=none
+" hi CursorLine cterm=NONE ctermbg=lightgrey
+" hi CursorLineNR cterm=NONE ctermfg=black ctermbg=lightgrey
+
 " mappings --------------------------------------------------------------------
 nnoremap Q <nop>
 
