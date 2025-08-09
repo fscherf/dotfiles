@@ -16,6 +16,7 @@ set cursorline
 set mouse=a
 set clipboard=unnamedplus
 set laststatus=2
+set noswapfile
 
 " theme -----------------------------------------------------------------------
 set background=dark
