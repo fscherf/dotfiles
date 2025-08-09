@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+set -x
+
+fusermount -zu ~/mnt/ripley-storage
+fusermount -zu ~/mnt/ripley-data
+fusermount -zu ~/mnt/ripley-devel
+fusermount -zu ~/mnt/ripley-media
