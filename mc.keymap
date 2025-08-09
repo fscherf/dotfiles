@@ -1,0 +1,14 @@
+[filemanager]
+Quit = q
+Move = m
+Delete = d
+MakeDir = M
+CdQuick = F
+Copy = c
+
+[panel]
+CdParent = h
+Down = down; t
+Up = up; n
+Enter = enter; s; u
+Mark = insert; ctrl-t; V

@@ -37,9 +37,11 @@ install:
 	[ -d ~/.vim/bundle/Vundle.vim ] || (git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim; vim +VundleInstall)
 	[ -d ~/bin ] || mkdir ~/bin
 	[ -d ~/.config/terminator ] || mkdir -p ~/.config/terminator
+	[ -d ~/.config/mc ] || mkdir -p ~/.config/mc
 	[ -f ~/.bashrc.local ] || touch ~/.bashrc.local
 	[ -f ~/.vimrc.local ] || touch ~/.vimrc.local
 	cp terminator.cfg ~/.config/terminator/config
+	cp mc.keymap ~/.config/mc/mc.keymap
 	cp .profile ~/.profile
 	cp .bashrc ~/.bashrc
 	cp .gitconfig ~/.gitconfig
@@ -55,6 +57,7 @@ pull:
 	cp ~/.tmux.conf .tmux.conf
 	cp ~/.tigrc .tigrc
 	cp ~/.vimrc .vimrc
+	cp ~/.config/mc/mc.keymap mc.keymap
 
 root-install:
 	[ -f ~/.bashrc.local ] || touch ~/.bashrc.local
