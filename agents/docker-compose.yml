@@ -8,3 +8,8 @@ services:
     build:
       context: .
       dockerfile: debian-stable-slim.Dockerfile
+
+  pi:
+    build:
+      context: .
+      dockerfile: debian-testing-slim.Dockerfile
