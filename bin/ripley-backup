@@ -2,4 +2,5 @@
 set -x
 
 time rsync --archive --delete --progress \
-    $HOME/data/ ripley:~/data/systems/$HOSTNAME/data/
+    $HOME/data/ ripley:~/data/systems/$HOSTNAME/data/ \
+    --exclude=/devel/*
