@@ -34,30 +34,24 @@ install-font:
 
 # config ######################################################################
 install:
+	# directories
 	[ -d ~/.vim/bundle/Vundle.vim ] || (git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim; vim +VundleInstall)
 	[ -d ~/bin ] || mkdir ~/bin
 	[ -d ~/.config/terminator ] || mkdir -p ~/.config/terminator
 	[ -d ~/.config/mc ] || mkdir -p ~/.config/mc
+	# local configs
 	[ -f ~/.bashrc.local ] || touch ~/.bashrc.local
 	[ -f ~/.vimrc.local ] || touch ~/.vimrc.local
-	cp terminator.cfg ~/.config/terminator/config
-	cp mc.keymap ~/.config/mc/mc.keymap
-	cp .profile ~/.profile
-	cp .bashrc ~/.bashrc
-	cp .gitconfig ~/.gitconfig
-	cp .gitignore.global ~/.gitignore
-	cp .tmux.conf ~/.tmux.conf
-	cp .tigrc ~/.tigrc
-	cp .vimrc ~/.vimrc
-
-pull:
-	cp ~/.config/terminator/config terminator.cfg
-	cp ~/.bashrc .bashrc
-	cp ~/.gitconfig .gitconfig
-	cp ~/.tmux.conf .tmux.conf
-	cp ~/.tigrc .tigrc
-	cp ~/.vimrc .vimrc
-	cp ~/.config/mc/mc.keymap mc.keymap
+	# symlinks
+	[ -L ~/.bashrc ] || ln -s $$PWD/.bashrc ~/.bashrc
+	[ -L ~/.profile ] || ln -s $$PWD/.profile ~/.profile
+	[ -L ~/.vimrc ] || ln -s $$PWD/.vimrc ~/.vimrc
+	[ -L ~/.tmux.conf ] || ln -s $$PWD/.tmux.conf ~/.tmux.conf
+	[ -L ~/.gitconfig ] || ln -s $$PWD/.gitconfig ~/.gitconfig
+	[ -L ~/.gitignore ] || ln -s $$PWD/.gitignore.global ~/.gitignore
+	[ -L ~/.tigrc ] || ln -s $$PWD/.tigrc ~/.tigrc
+	[ -L ~/.config/terminator/config ] || ln -s $$PWD/terminator.cfg ~/.config/terminator/config
+	[ -L ~/.config/mc/mc.keymap ] || ln -s $$PWD/mc.keymap ~/.config/mc/mc.keymap
 
 root-install:
 	[ -f ~/.bashrc.local ] || touch ~/.bashrc.local
