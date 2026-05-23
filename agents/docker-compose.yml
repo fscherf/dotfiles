@@ -2,9 +2,9 @@ services:
   claude-code:
     build:
       context: .
-      dockerfile: debian-slim.Dockerfile
+      dockerfile: debian-stable-slim.Dockerfile
 
   opencode:
     build:
       context: .
-      dockerfile: debian-slim.Dockerfile
+      dockerfile: debian-stable-slim.Dockerfile
