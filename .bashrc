@@ -34,8 +34,8 @@ fi
 
 # aliases #####################################################################
 alias ..='cd ..'
-alias l='ls -hlF --color=auto'
-alias ll='ls -hAlF --color=auto'
+alias l='ls -hlF --group-directories-first --color=auto'
+alias ll='ls -hAlF --group-directories-first --color=auto '
 alias tree='tree -C'
 alias rgrep='grep -rnI'
 alias feh='feh --scale-down'
