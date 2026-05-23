@@ -3,5 +3,3 @@ services:
     build:
       context: .
       dockerfile: debian-slim.Dockerfile
-
-    command: /bin/bash
