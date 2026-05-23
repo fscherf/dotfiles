@@ -111,6 +111,16 @@ start-ssh-agent() {
     find ~/.ssh/ -type f -exec grep -l "PRIVATE" {} \; | xargs ssh-add
 }
 
+# project aliases #############################################################
+for dir in $HOME/data/devel/*; do
+    if [ -d "$dir" ]; then
+        project_name=$(basename "$dir")
+        alias_name="_$project_name"
+
+        alias $alias_name="cd \"$dir\""
+    fi
+done
+
 # pyenv #######################################################################
 if [ -d ~/.pyenv ]; then
     export PYENV_ROOT="$HOME/.pyenv"
