@@ -3,3 +3,8 @@ services:
     build:
       context: .
       dockerfile: debian-slim.Dockerfile
+
+  opencode:
+    build:
+      context: .
+      dockerfile: debian-slim.Dockerfile
