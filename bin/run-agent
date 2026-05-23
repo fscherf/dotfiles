@@ -1,0 +1,35 @@
+#!/bin/bash
+
+AGENTS_ROOT=~/.dotfiles/agents
+PROJECTS_ROOT=~/devel
+SERVICE_NAME=$1
+PROJECT_NAME=$2
+COMMAND=$3
+
+cd $AGENTS_ROOT
+
+if [ -z "$SERVICE_NAME" ]; then
+    SERVICE_NAME=`docker compose config --services | fzf --prompt="Agent: "`
+fi
+
+if [ -z "$PROJECT_NAME" ]; then
+    PROJECT_NAME=`ls -1 $PROJECTS_ROOT | fzf --prompt="Project: "`
+fi
+
+if [ -z "$COMMAND" ]; then
+    COMMAND="/srv/$SERVICE_NAME/entrypoint.sh"
+fi
+
+exec docker compose run \
+    -it \
+    --remove-orphans \
+    --user "`id -u`:`id -g`" \
+    --volume "./$SERVICE_NAME:/srv/$SERVICE_NAME" \
+    --volume "./data/home/$SERVICE_NAME:/home/$SERVICE_NAME" \
+    --volume "$PROJECTS_ROOT/$PROJECT_NAME:/srv/projects/$PROJECT_NAME" \
+    --workdir /home/$SERVICE_NAME \
+    --env "HOME=/home/$SERVICE_NAME" \
+    --env "PROJECT_NAME=$PROJECT_NAME" \
+    --env "PROJECT_ROOT=/srv/projects/$PROJECT_NAME" \
+    $SERVICE_NAME \
+    $COMMAND
